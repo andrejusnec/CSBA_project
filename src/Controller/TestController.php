@@ -22,6 +22,6 @@ class TestController extends  AbstractController
      */
     public function main()
     {
-        return $this->render('base.html.twig');
+        return $this->render('pages/wishlist.html.twig');
     }
 }

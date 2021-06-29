@@ -166,7 +166,7 @@ h2 {
 
 .normal-slider .slick-prev::before,
 .normal-slider .slick-next::before {
-    font-family: "Font Awesome 5 Free";
+    font-family: "Font Awesome 5 Free", serif;
     font-weight: 900;
     font-size: 30px;
     color: #ffffff;
@@ -1902,7 +1902,7 @@ h2 {
     border-color: #000000;
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 768px) {
     .call-to-action,
     .call-to-action .col-md-6:last-child {
         text-align: center;
@@ -2389,7 +2389,7 @@ h2 {
     color: #ffffff;
 }
 
-@media (max-width: 768.98px) {
+@media (max-width: 768px) {
     .footer-bottom .copyright,
     .footer-bottom .template-by {
         text-align: center;
