@@ -16,15 +16,15 @@ import './styles/app.css';
 import './styles/custom.css';
 
 //JS
-import './bootstrap';
-const jQuery = require('jquery');
-
-require('bootstrap/dist/js/bootstrap.bundle');
 
 import './js/easing/easing.min.js';
 import './js/easing/easing.js';
 import './js/slick/slick.min.js';
 import './js/main.js';
+import './bootstrap';
+require('bootstrap/dist/js/bootstrap.bundle');
+const jQuery = require('jquery');
+
 
 
 

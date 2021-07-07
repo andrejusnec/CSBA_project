@@ -5,9 +5,9 @@
     $(document).ready(function () {
         function toggleNavbarMethod() {
             if ($(window).width() > 768) {
-                $('.navbar .dropdown').on('mouseover', function () {
+                $('.navbar .dropdown').on('click', function () {
                     $('.dropdown-toggle', this).trigger('click');
-                }).on('mouseout', function () {
+                }).on('click', function () {
                     $('.dropdown-toggle', this).trigger('click').blur();
                 });
             } else {
@@ -204,13 +204,14 @@
     $('.qty button').on('click', function () {
         let $button = $(this);
         let oldValue = $button.parent().find('input').val();
+        let newVal
         if ($button.hasClass('btn-plus')) {
-            let newVal = parseFloat(oldValue) + 1;
+             newVal = parseFloat(oldValue) + 1;
         } else {
             if (oldValue > 0) {
-                let newVal = parseFloat(oldValue) - 1;
+                newVal = parseFloat(oldValue) - 1;
             } else {
-                let newVal = 0;
+                newVal = 0;
             }
         }
         $button.parent().find('input').val(newVal);
