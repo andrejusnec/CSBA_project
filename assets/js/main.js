@@ -5,9 +5,9 @@
     $(document).ready(function () {
         function toggleNavbarMethod() {
             if ($(window).width() > 768) {
-                $('.navbar .dropdown').on('mouseover', function () {
+                $('.navbar .dropdown').on('click', function () {
                     $('.dropdown-toggle', this).trigger('click');
-                }).on('mouseout', function () {
+                }).on('click', function () {
                     $('.dropdown-toggle', this).trigger('click').blur();
                 });
             } else {
@@ -202,13 +202,14 @@
     
     // Quantity
     $('.qty button').on('click', function () {
-        var $button = $(this);
-        var oldValue = $button.parent().find('input').val();
+        let $button = $(this);
+        let oldValue = $button.parent().find('input').val();
+        let newVal
         if ($button.hasClass('btn-plus')) {
-            var newVal = parseFloat(oldValue) + 1;
+             newVal = parseFloat(oldValue) + 1;
         } else {
             if (oldValue > 0) {
-                var newVal = parseFloat(oldValue) - 1;
+                newVal = parseFloat(oldValue) - 1;
             } else {
                 newVal = 0;
             }
@@ -230,9 +231,14 @@
     // Payment methods show hide
     $('.checkout .payment-method .custom-control-input').change(function () {
         if ($(this).prop('checked')) {
-            var checkbox_id = $(this).attr('id');
+            let checkbox_id = $(this).attr('id');
             $('.checkout .payment-method .payment-content').slideUp();
             $('#' + checkbox_id + '-show').slideDown();
+        }
+    });
+    $(window).resize(function(){
+        if ($(window).width() <= 1080){
+            $('.header-logo').css('max-width', '100%');
         }
     });
 })(jQuery);
