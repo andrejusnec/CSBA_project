@@ -20,7 +20,7 @@ class TestController extends  AbstractController
     /**
      * @Route("/main", name="main", methods={"GET"})
      */
-    public function main()
+    public function main(): Response
     {
         return $this->render('pages/main.html.twig');
     }
