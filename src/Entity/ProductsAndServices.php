@@ -17,7 +17,7 @@ class ProductsAndServices
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    private $id;
 
     /**
      * @ORM\Column(type="boolean")
@@ -25,15 +25,15 @@ class ProductsAndServices
     private ?bool $isProduct;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="product_id")
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="product")
      */
-    private ArrayCollection $images;
+    private $images;
 
     /**
      * @ORM\ManyToOne(targetEntity=Measure::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, name="measure_code_id", referencedColumnName="code")
      */
-    private ?Measure $measure_code;
+    private $measure_code;
 
     /**
      * @ORM\Column(type="boolean")
@@ -54,6 +54,17 @@ class ProductsAndServices
      * @ORM\OneToMany(targetEntity=ProductBalance::class, mappedBy="product")
      */
     private $productBalances;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private ?bool $isCatalog;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ProductsAndServices::class)
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private ?ProductsAndServices $parent;
 
     /**
      * ProductsAndServices constructor.
@@ -206,5 +217,32 @@ class ProductsAndServices
         }
 
         return $this;
+    }
+
+    public function getIsCatalog(): ?bool
+    {
+        return $this->isCatalog;
+    }
+
+    public function setIsCatalog(bool $isCatalog): self
+    {
+        $this->isCatalog = $isCatalog;
+
+        return $this;
+    }
+
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?self $parent): self
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+    public function __toString() {
+        return $this->title;
     }
 }

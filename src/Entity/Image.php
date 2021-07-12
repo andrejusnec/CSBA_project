@@ -15,7 +15,7 @@ class Image
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -26,7 +26,7 @@ class Image
      * @ORM\ManyToOne(targetEntity=ProductsAndServices::class, inversedBy="images")
      * @ORM\JoinColumn(nullable=false)
      */
-    private ?ProductsAndServices $product;
+    public ?ProductsAndServices $product;
 
     /**
      * @ORM\Column(type="boolean")
@@ -90,4 +90,5 @@ class Image
 
         return $this;
     }
+
 }
