@@ -1,5 +1,6 @@
 /mysql/
 /public/build/
+/public/uploads/
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php

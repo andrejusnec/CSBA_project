@@ -6,7 +6,10 @@ use App\Controller\EACrudControllers\UserCrudController;
 use App\Entity\Color;
 use App\Entity\Image;
 use App\Entity\Measure;
+use App\Entity\Order;
 use App\Entity\ProductsAndServices;
+use App\Entity\ProductSupply;
+use App\Entity\ProductSupplyList;
 use App\Entity\Size;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -52,5 +55,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Measures', 'fas fa-list', Measure::class);
         yield MenuItem::linkToCrud('Images', 'fas fa-list', Image::class);
         yield MenuItem::linkToCrud('Size', 'fas fa-list', Size::class);
+        yield MenuItem::linkToCrud('ProductSupply', 'fas fa-list', ProductSupply::class);
+        yield MenuItem::linkToCrud('ProductSupplyList', 'fas fa-list', ProductSupplyList::class);
+        yield MenuItem::linkToCrud('Order', 'fas fa-list', Order::class);
     }
 }

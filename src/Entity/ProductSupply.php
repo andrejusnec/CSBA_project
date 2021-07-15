@@ -6,6 +6,7 @@ use App\Repository\ProductSupplyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 
 /**
  * @ORM\Entity(repositoryClass=ProductSupplyRepository::class)
@@ -47,6 +48,7 @@ class ProductSupply
     public function __construct()
     {
         $this->productSupplyLists = new ArrayCollection();
+        $this->date = new \DateTime('Europe/Vilnius');
     }
 
     public function getId(): ?int

@@ -19,7 +19,7 @@ class ProductSupplyList
 
     /**
      * @ORM\ManyToOne(targetEntity=ProductSupply::class, inversedBy="productSupplyLists")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $product_supply;
 

@@ -90,5 +90,7 @@ class User
 
         return $this;
     }
-
+    public function __toString() {
+        return $this->first_name.$this->last_name;
+    }
 }
