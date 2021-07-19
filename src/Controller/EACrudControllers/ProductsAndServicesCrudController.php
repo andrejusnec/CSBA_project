@@ -6,6 +6,8 @@ use App\Entity\ProductsAndServices;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ProductsAndServicesCrudController extends AbstractCrudController
@@ -19,11 +21,13 @@ class ProductsAndServicesCrudController extends AbstractCrudController
     {
         return [
             TextField::new('title'),
-            BooleanField::new('isProduct'),
+            BooleanField::new('isProduct') ,
             BooleanField::new('isActive'),
             BooleanField::new('isCatalog'),
             AssociationField::new('measure_code'),
-            AssociationField::new('parent')
+            AssociationField::new('parent'),
+            TextField::new('fontawesome_icon')->onlyOnForms()
+            //CollectionField::new('Images')
         ];
     }
 }

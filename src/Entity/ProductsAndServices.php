@@ -46,6 +46,11 @@ class ProductsAndServices
     private ?string $title;
 
     /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private ?string $fontawesome_icon;
+
+    /**
      * @ORM\OneToMany(targetEntity=ProductOrderList::class, mappedBy="product")
      */
     private $productOrderLists;
@@ -62,7 +67,7 @@ class ProductsAndServices
 
     /**
      * @ORM\ManyToOne(targetEntity=ProductsAndServices::class)
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private ?ProductsAndServices $parent;
 
@@ -244,5 +249,18 @@ class ProductsAndServices
     }
     public function __toString() {
         return $this->title;
+    }
+    public function getfontawesome_icon(): ?string
+    {
+        return $this->fontawesome_icon;
+    }
+    public function getFontawesomeIcon(): ?string
+    {
+        return $this->fontawesome_icon;
+    }
+
+    public function setFontawesomeIcon(?string $fontawesome_icon): void
+    {
+        $this->fontawesome_icon = $fontawesome_icon;
     }
 }

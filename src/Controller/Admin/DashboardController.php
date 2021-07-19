@@ -4,13 +4,17 @@ namespace App\Controller\Admin;
 
 use App\Controller\EACrudControllers\UserCrudController;
 use App\Entity\Color;
+use App\Entity\Country;
 use App\Entity\Image;
 use App\Entity\Measure;
 use App\Entity\Order;
+use App\Entity\ProductBalance;
+use App\Entity\ProductOrderList;
 use App\Entity\ProductsAndServices;
 use App\Entity\ProductSupply;
 use App\Entity\ProductSupplyList;
 use App\Entity\Size;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -25,20 +29,8 @@ class DashboardController extends AbstractDashboardController
      */
     public function index(): Response
     {
-        //return parent::index();
-
-        // redirect to some CRUD controller
         $routeBuilder = $this->get(AdminUrlGenerator::class);
         return $this->redirect($routeBuilder->setController(UserCrudController::class)->generateUrl());
-
-        // you can also redirect to different pages depending on the current user
-//        if ('jane' === $this->getUser()->getUsername()) {
-//            return $this->redirect('...');
-//        }
-
-        // you can also render some template to display a proper Dashboard
-        // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //return $this->render('some/path/my-dashboard.html.twig');
     }
 
     public function configureDashboard(): Dashboard
@@ -49,14 +41,22 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Color', 'fas fa-list', Color::class);
-        yield MenuItem::linkToCrud('ProductsAndServices', 'fas fa-list', ProductsAndServices::class);
-        yield MenuItem::linkToCrud('Measures', 'fas fa-list', Measure::class);
-        yield MenuItem::linkToCrud('Images', 'fas fa-list', Image::class);
-        yield MenuItem::linkToCrud('Size', 'fas fa-list', Size::class);
-        yield MenuItem::linkToCrud('ProductSupply', 'fas fa-list', ProductSupply::class);
-        yield MenuItem::linkToCrud('ProductSupplyList', 'fas fa-list', ProductSupplyList::class);
-        yield MenuItem::linkToCrud('Order', 'fas fa-list', Order::class);
+        return [
+            //MenuItem::linktoDashboard('Dashboard', 'fa fa-home'),
+            MenuItem::subMenu('List', 'fa fa-article')->setSubItems([
+                MenuItem::linkToCrud('Users', 'fas fa-user', User::class),
+                MenuItem::linkToCrud('Color', 'fas fa-list', Color::class),
+                MenuItem::linkToCrud('Products And Services', 'fas fa-list', ProductsAndServices::class),
+                MenuItem::linkToCrud('Measures', 'fas fa-list', Measure::class),
+                MenuItem::linkToCrud('Images', 'fas fa-list', Image::class),
+                MenuItem::linkToCrud('Size', 'fas fa-list', Size::class),
+                MenuItem::linkToCrud('Product Supply', 'fas fa-list', ProductSupply::class),
+                MenuItem::linkToCrud('Product Supply List', 'fas fa-list', ProductSupplyList::class),
+                MenuItem::linkToCrud('Order', 'fas fa-list', Order::class),
+                MenuItem::linkToCrud('Country', 'fas fa-list', Country::class),
+                MenuItem::linkToCrud('Product Balance', 'fas fa-list', ProductBalance::class),
+                MenuItem::linkToCrud('Product Order List', 'fas fa-list', ProductOrderList::class),
+            ])
+        ];
     }
 }

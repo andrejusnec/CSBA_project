@@ -3,7 +3,6 @@
 namespace App\Controller\EACrudControllers;
 
 use App\Entity\Image;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -32,7 +31,7 @@ class ImageCrudController extends AbstractCrudController
             TextareaField::new('thumbnail', 'Image')
                 ->onlyOnForms()
                 ->setFormType(VichImageType::class),
-            AssociationField::new('product'),
+            AssociationField::new('product')
         ];
     }
 

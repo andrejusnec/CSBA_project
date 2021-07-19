@@ -133,4 +133,7 @@ class ProductSupply
 
         return $this;
     }
+    public function __toString() {
+        return $this->order_number;
+    }
 }

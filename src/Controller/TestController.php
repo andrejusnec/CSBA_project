@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 
+use App\Manager\BaseManager;
+use App\Manager\ProductAndServicesManager;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,19 +13,22 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TestController extends  AbstractController
 {
+    private ProductAndServicesManager $manager;
     /**
-     * @Route("/", methods={"GET"})
+     * TestController constructor.
      */
-    public function m(): string
+    public function __construct(ProductAndServicesManager $manager)
     {
-        return 'Hello';
+        $this->manager = $manager;
     }
+
     /**
      * @Route("/main", name="main", methods={"GET"})
      */
     public function main(): Response
     {
-        return $this->render('pages/main.html.twig');
+        $test = $this->manager->getParentCatalogs();
+        return $this->render('pages/main.html.twig', ['test' => $test]);
     }
     /**
      * @Route("product_details", name="pages/product_details", methods={"GET"})
