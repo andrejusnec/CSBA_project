@@ -27,7 +27,7 @@ class TestController extends  AbstractController
      */
     public function main(): Response
     {
-        $test = $this->manager->getParentCatalogs();
+        $test = $this->manager->hierarchy();
         return $this->render('pages/main.html.twig', ['test' => $test]);
     }
     /**

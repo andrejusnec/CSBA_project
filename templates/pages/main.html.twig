@@ -6,12 +6,28 @@
             <div class="row">
                 <div class="col-md-3">
                     <nav class="navbar bg-light">
-                        <ul class="navbar-nav">
-                            {% for value in test %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="{{ value.fontawesome_icon }}"></i>{{ value.title }}</a>
-                            </li>
-                            {% endfor %}
+                        <ul id="myUL">
+                            {% macro render_map(test) %}
+                                {% import _self as macros %}
+
+                                {% for value in test %}
+                                    <li><a class="{{ value.children is not empty ? 'caret' : '' }}"
+                                           href="{{ value.children is empty ? path('pages/product_list') : '#' }}"><i
+                                                class="{{ value.category.fontawesome_icon }}"></i>{{ value.category.title }}
+                                    </a>
+
+                                        {% if value.children is not empty %}
+                                            <ul class="nested">
+                                            {{ macros.render_map(value.children) }}
+                                            </ul>
+                                        {% endif %}
+
+                                {% endfor %}
+
+                                </li>
+                            {% endmacro %}
+                            {% import _self as macros %}
+                            {{ macros.render_map(test) }}
                         </ul>
                     </nav>
                 </div>
@@ -351,7 +367,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form">
-                        <input type="email"  placeholder="Your email here">
+                        <input type="email" placeholder="Your email here">
                         <button>Submit</button>
                     </div>
                 </div>
