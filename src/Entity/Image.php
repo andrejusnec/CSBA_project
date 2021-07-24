@@ -28,9 +28,11 @@ class Image
      */
     private $file_name;
 
+
+
     /**
      * @ORM\ManyToOne(targetEntity=ProductsAndServices::class, inversedBy="images")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     public ?ProductsAndServices $product;
 

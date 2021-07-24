@@ -5,7 +5,6 @@ namespace App\DataFixtures;
 use App\Factory\ColorFactory;
 use App\Factory\CountryFactory;
 use App\Factory\ImageFactory;
-use App\Factory\MeasureFactory;
 use App\Factory\OrderFactory;
 use App\Factory\ProductBalanceFactory;
 use App\Factory\ProductOrderListFactory;
@@ -16,10 +15,12 @@ use App\Factory\SizeFactory;
 use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture implements DependentFixtureInterface
 {
+
     public function getDependencies(): array
     {
         return [
@@ -53,7 +54,7 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
 
         ImageFactory::createMany(5,
             function() {
-                return ['product' => ProductsAndServicesFactory::random()];
+                return ['product' => ProductsAndServicesFactory::find(['isProduct' =>true, 'isActive' => true])];
             });
         CountryFactory::createMany(10);
         ProductSupplyFactory::createMany(10);
@@ -65,5 +66,15 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
             });
         ProductBalanceFactory::createMany(10);
         ProductOrderListFactory::createMany(10);
+
+        $products = ProductsAndServicesFactory::findBy(['main_image' => null, 'isProduct' => true]);
+        //dd($products);
+        foreach ($products as $product) {
+            //dd(ImageFactory::random());
+            $product->object()->setMainImage(ImageFactory::createOne(['product' => $product->object()])->object());
+            $product->save();
+            $manager->persist($product->object());
+        }
+        $manager->flush();
     }
 }

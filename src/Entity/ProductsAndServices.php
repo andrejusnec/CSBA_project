@@ -72,6 +72,28 @@ class ProductsAndServices
     private ?ProductsAndServices $parent;
 
     /**
+     * @ORM\OneToOne(targetEntity=Image::class)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     */
+    private $main_image;
+
+    /**
+     * @return mixed
+     */
+    public function getMainImage()
+    {
+        return $this->main_image;
+    }
+
+    /**
+     * @param mixed $main_image
+     */
+    public function setMainImage($main_image): void
+    {
+        $this->main_image = $main_image;
+    }
+
+    /**
      * ProductsAndServices constructor.
      */
     public function __construct()
@@ -262,5 +284,11 @@ class ProductsAndServices
     public function setFontawesomeIcon(?string $fontawesome_icon): void
     {
         $this->fontawesome_icon = $fontawesome_icon;
+    }
+    public function images() : ?Image {
+
+        if($this->images != []) {
+            return $this->images[0]->getFileName();
+        }
     }
 }

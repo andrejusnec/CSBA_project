@@ -43,4 +43,12 @@ class ProductAndServicesManager
         }
         return $sortedArr;
     }
+    public function findCategoryProducts(int $id) : array
+    {
+        return $this->repository->findBy(['isProduct' => true, 'isActive' => true, 'parent' => $id]);
+    }
+    public function findAllProducts() : array
+    {
+        return $this->repository->findBy(['isProduct' => true]);
+    }
 }

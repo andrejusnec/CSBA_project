@@ -1,0 +1,39 @@
+{% block productList %}
+
+    {% if selectedProduct is defined %}
+        {% set data = selectedProduct %}
+    {% else %}
+        {% set data = allProducts %}
+    {% endif %}
+    {% for value in data %}
+        <div class="col-md-4">
+            <div class="product-item">
+                <div class="product-title">
+                    <a href="#">{{ value.title }}</a>
+                    <div class="ratting">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                </div>
+                <div class="product-image">
+                    <a href="{{ path('pages/product_details') }}">
+                        <img src="{{ asset('uploads/images/') }}{{ value.MainImage is not empty ? value.MainImage.FileName : '#' }}"
+                             alt="{{ value.title }}">
+                    </a>
+                    <div class="product-action" \>
+                        <a href="#"><i class="fa fa-cart-plus"></i></a>
+                        <a href="#"><i class="fa fa-heart"></i></a>
+                        <a href="#"><i class="fa fa-search"></i></a>
+                    </div>
+                </div>
+                <div class="product-price">
+                    <h3><span>$</span>99</h3>
+                    <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

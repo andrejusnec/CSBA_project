@@ -11,9 +11,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TestController extends  AbstractController
+class TestController extends AbstractController
 {
     private ProductAndServicesManager $manager;
+
     /**
      * TestController constructor.
      */
@@ -27,9 +28,10 @@ class TestController extends  AbstractController
      */
     public function main(): Response
     {
-        $test = $this->manager->hierarchy();
-        return $this->render('pages/main.html.twig', ['test' => $test]);
+        $allCategories = $this->manager->hierarchy();
+        return $this->render('pages/main.html.twig', ['allCategories' => $allCategories]);
     }
+
     /**
      * @Route("product_details", name="pages/product_details", methods={"GET"})
      */
@@ -37,6 +39,7 @@ class TestController extends  AbstractController
     {
         return $this->render('pages/product_details.html.twig');
     }
+
     /**
      * @Route("cart", name="pages/cart", methods={"GET"})
      */
@@ -44,6 +47,7 @@ class TestController extends  AbstractController
     {
         return $this->render('pages/cart.html.twig');
     }
+
     /**
      * @Route("checkout", name="pages/checkout", methods={"GET"})
      */
@@ -51,6 +55,7 @@ class TestController extends  AbstractController
     {
         return $this->render('pages/checkout.html.twig');
     }
+
     /**
      * @Route("contact", name="pages/contact", methods={"GET"})
      */
@@ -58,6 +63,7 @@ class TestController extends  AbstractController
     {
         return $this->render('pages/contact.html.twig');
     }
+
     /**
      * @Route("login", name="pages/login", methods={"GET"})
      */
@@ -65,6 +71,7 @@ class TestController extends  AbstractController
     {
         return $this->render('pages/login.html.twig');
     }
+
     /**
      * @Route("my_account", name="pages/my_account", methods={"GET"})
      */
@@ -72,13 +79,27 @@ class TestController extends  AbstractController
     {
         return $this->render('pages/my_account.html.twig');
     }
+
     /**
      * @Route("product_list", name="pages/product_list", methods={"GET"})
      */
     public function product_list(): Response
     {
-        return $this->render('pages/product_list.html.twig');
+        $allProducts = $this->manager->findAllProducts();
+        $allCategories = $this->manager->hierarchy();
+        return $this->render('pages/product_list.html.twig', ['allCategories' => $allCategories, 'allProducts' => $allProducts]);
     }
+
+    /**
+     * @Route("pages/product_list_show/{slug}", name="pages/product_list_show", methods={"GET"})
+     */
+    public function product_list_show($slug): Response
+    {
+        $selectedProduct = $this->manager->findCategoryProducts($slug);
+        $allCategories = $this->manager->hierarchy();
+        return $this->render('pages/product_list.html.twig', ['allCategories' => $allCategories, 'selectedProduct' => $selectedProduct]);
+    }
+
     /**
      * @Route("wishlist", name="pages/wishlist", methods={"GET"})
      */

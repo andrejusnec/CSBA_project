@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210717201713 extends AbstractMigration
+final class Version20210724093740 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -29,10 +29,10 @@ final class Version20210717201713 extends AbstractMigration
         $this->addSql('CREATE TABLE product_order_list (id INT AUTO_INCREMENT NOT NULL, product_id INT NOT NULL, size_id INT NOT NULL, color_id INT NOT NULL, order_id_id INT NOT NULL, quantity NUMERIC(18, 3) NOT NULL, price NUMERIC(18, 2) NOT NULL, total NUMERIC(18, 2) NOT NULL, INDEX IDX_9A5E9D244584665A (product_id), INDEX IDX_9A5E9D24498DA827 (size_id), INDEX IDX_9A5E9D247ADA1FB5 (color_id), INDEX IDX_9A5E9D24FCDAEAAA (order_id_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE product_supply (id INT AUTO_INCREMENT NOT NULL, order_number VARCHAR(10) NOT NULL, date DATETIME NOT NULL, is_active TINYINT(1) NOT NULL, status TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE product_supply_list (id INT AUTO_INCREMENT NOT NULL, product_supply_id INT DEFAULT NULL, product_id INT NOT NULL, size_id INT NOT NULL, color_id INT NOT NULL, quantity NUMERIC(18, 3) NOT NULL, INDEX IDX_530F021E91887655 (product_supply_id), INDEX IDX_530F021E4584665A (product_id), INDEX IDX_530F021E498DA827 (size_id), INDEX IDX_530F021E7ADA1FB5 (color_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE products_and_services (id INT AUTO_INCREMENT NOT NULL, measure_code_id VARCHAR(3) DEFAULT NULL, parent_id INT DEFAULT NULL, is_product TINYINT(1) NOT NULL, is_active TINYINT(1) NOT NULL, title VARCHAR(255) NOT NULL, is_catalog TINYINT(1) NOT NULL, INDEX IDX_CE50D835BCA12A6F (measure_code_id), INDEX IDX_CE50D835727ACA70 (parent_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE products_and_services (id INT AUTO_INCREMENT NOT NULL, measure_code_id VARCHAR(3) DEFAULT NULL, parent_id INT DEFAULT NULL, main_image_id INT DEFAULT NULL, is_product TINYINT(1) NOT NULL, is_active TINYINT(1) NOT NULL, title VARCHAR(255) NOT NULL, fontawesome_icon VARCHAR(50) DEFAULT NULL, is_catalog TINYINT(1) NOT NULL, INDEX IDX_CE50D835BCA12A6F (measure_code_id), INDEX IDX_CE50D835727ACA70 (parent_id), UNIQUE INDEX UNIQ_CE50D835E4873418 (main_image_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE size (id INT AUTO_INCREMENT NOT NULL, is_active TINYINT(1) NOT NULL, title VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, first_name VARCHAR(100) NOT NULL, last_name VARCHAR(100) NOT NULL, email VARCHAR(100) DEFAULT NULL, phone VARCHAR(25) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE image ADD CONSTRAINT FK_C53D045F4584665A FOREIGN KEY (product_id) REFERENCES products_and_services (id)');
+        $this->addSql('ALTER TABLE image ADD CONSTRAINT FK_C53D045F4584665A FOREIGN KEY (product_id) REFERENCES products_and_services (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE `order` ADD CONSTRAINT FK_F5299398F92F3E70 FOREIGN KEY (country_id) REFERENCES country (id)');
         $this->addSql('ALTER TABLE `order` ADD CONSTRAINT FK_F5299398A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE product_balance ADD CONSTRAINT FK_7D2D044E91887655 FOREIGN KEY (product_supply_id) REFERENCES product_supply (id)');
@@ -49,7 +49,8 @@ final class Version20210717201713 extends AbstractMigration
         $this->addSql('ALTER TABLE product_supply_list ADD CONSTRAINT FK_530F021E498DA827 FOREIGN KEY (size_id) REFERENCES size (id)');
         $this->addSql('ALTER TABLE product_supply_list ADD CONSTRAINT FK_530F021E7ADA1FB5 FOREIGN KEY (color_id) REFERENCES color (id)');
         $this->addSql('ALTER TABLE products_and_services ADD CONSTRAINT FK_CE50D835BCA12A6F FOREIGN KEY (measure_code_id) REFERENCES measure (code)');
-        $this->addSql('ALTER TABLE products_and_services ADD CONSTRAINT FK_CE50D835727ACA70 FOREIGN KEY (parent_id) REFERENCES products_and_services (id)');
+        $this->addSql('ALTER TABLE products_and_services ADD CONSTRAINT FK_CE50D835727ACA70 FOREIGN KEY (parent_id) REFERENCES products_and_services (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE products_and_services ADD CONSTRAINT FK_CE50D835E4873418 FOREIGN KEY (main_image_id) REFERENCES image (id) ON DELETE CASCADE');
     }
 
     public function down(Schema $schema): void
@@ -59,6 +60,7 @@ final class Version20210717201713 extends AbstractMigration
         $this->addSql('ALTER TABLE product_order_list DROP FOREIGN KEY FK_9A5E9D247ADA1FB5');
         $this->addSql('ALTER TABLE product_supply_list DROP FOREIGN KEY FK_530F021E7ADA1FB5');
         $this->addSql('ALTER TABLE `order` DROP FOREIGN KEY FK_F5299398F92F3E70');
+        $this->addSql('ALTER TABLE products_and_services DROP FOREIGN KEY FK_CE50D835E4873418');
         $this->addSql('ALTER TABLE products_and_services DROP FOREIGN KEY FK_CE50D835BCA12A6F');
         $this->addSql('ALTER TABLE product_balance DROP FOREIGN KEY FK_7D2D044EFCDAEAAA');
         $this->addSql('ALTER TABLE product_order_list DROP FOREIGN KEY FK_9A5E9D24FCDAEAAA');
