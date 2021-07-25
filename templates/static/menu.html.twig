@@ -1,26 +1,25 @@
 {% block menu %}
     <nav class="navbar bg-light">
-        <p> {{ app.request.attributes.get('_route') }}</p>
         <ul id="myUL">
+            {% if id is defined %}
+            {% set caret_arrow, active = 'caret-down', 'active'  %}
+            {% endif %}
             {% macro render_map(allCategories) %}
                 {% import _self as macros %}
 
                 {% for value in allCategories %}
                     <li>
-                        <a class="{{ value.children is not empty ? 'caret' : '' }}
-                                  {{ app.request.attributes.get('_route') == 'pages/product_list_show'  ?
-                        'caret-down' : '' }}"
-
-                           href="{{ value.children is empty ? path('pages/product_list_show', { slug: value.category.id }) : '#' }}">
-                            <i class="{{ value.category.fontawesome_icon }}"></i>{{ value.category.title }}</a>
+                    <a class="{{ value.children is not empty ? 'caret' : ''}}"
+                       href="{{ value.children is empty ? path('pages/product_list_show', { slug: value.category.id }) : '#' }}"><i
+                                class="{{ value.category.fontawesome_icon }}"></i>{{ value.category.title }}</a>
                     {% if value.children is not empty %}
-                        <ul class="nested">
+                        <ul class="nested {{ id is defined  ? active : '' }}">
                             {{ macros.render_map(value.children) }}
                         </ul>
                     {% endif %}
 
                 {% endfor %}
-                    </li>
+                </li>
             {% endmacro %}
             {% import _self as macros %}
             {{ macros.render_map(allCategories) }}

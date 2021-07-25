@@ -1,17 +1,6 @@
 {% extends "base.html.twig" %}
 {% block body %}
-    <!-- Breadcrumb Start -->
-    <div class="breadcrumb-wrap">
-        <div class="container-fluid">
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ path('main') }}">Home</a></li>
-                <li class="breadcrumb-item {{ app.request.get('_route') == 'pages/product_list' ? 'active' : '' }}">
-                    <a href="{{ path('pages/product_list') }}">Products</a></li>
-                <li class="breadcrumb-item">Product List</li>
-            </ul>
-        </div>
-    </div>
-    <!-- Breadcrumb End -->
+    {% block breadCrumb %} {{ include('static/breadcrumb.html.twig') }} {% endblock %}
 
     <!-- Product List Start -->
     <div class="product-view">

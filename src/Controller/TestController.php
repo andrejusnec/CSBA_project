@@ -24,7 +24,7 @@ class TestController extends AbstractController
     }
 
     /**
-     * @Route("/main", name="main", methods={"GET"})
+     * @Route("/home", name="home", methods={"GET"})
      */
     public function main(): Response
     {
@@ -38,6 +38,15 @@ class TestController extends AbstractController
     public function product_details(): Response
     {
         return $this->render('pages/product_details.html.twig');
+    }
+
+    /**
+     * @Route("product_details/{slug}", name="pages/product_details_show", methods={"GET"})
+     */
+    public function product_details_show($slug): Response
+    {
+        $product = $this->manager->findOne($slug);
+        return $this->render('pages/product_details.html.twig', ['product' => $product]);
     }
 
     /**
@@ -95,9 +104,13 @@ class TestController extends AbstractController
      */
     public function product_list_show($slug): Response
     {
+
         $selectedProduct = $this->manager->findCategoryProducts($slug);
         $allCategories = $this->manager->hierarchy();
-        return $this->render('pages/product_list.html.twig', ['allCategories' => $allCategories, 'selectedProduct' => $selectedProduct]);
+        return $this->render('pages/product_list.html.twig',
+            ['allCategories' => $allCategories,
+                'selectedProduct' => $selectedProduct,
+                'ide' => $slug]);
     }
 
     /**

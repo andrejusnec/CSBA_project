@@ -4,6 +4,7 @@
 namespace App\Manager;
 
 
+use App\Entity\ProductsAndServices;
 use App\Repository\ProductsAndServicesRepository;
 
 class ProductAndServicesManager
@@ -23,7 +24,8 @@ class ProductAndServicesManager
     {
         return $this->repository->getParents();
     }
-    public function getAll() : array
+
+    public function getAll(): array
     {
         return $this->repository->findAll();
     }
@@ -43,12 +45,19 @@ class ProductAndServicesManager
         }
         return $sortedArr;
     }
-    public function findCategoryProducts(int $id) : array
+
+    public function findCategoryProducts(int $id): array
     {
         return $this->repository->findBy(['isProduct' => true, 'isActive' => true, 'parent' => $id]);
     }
-    public function findAllProducts() : array
+
+    public function findAllProducts(): array
     {
         return $this->repository->findBy(['isProduct' => true]);
+    }
+
+    public function findOne(int $id): ProductsAndServices
+    {
+        return $this->repository->find($id);
     }
 }

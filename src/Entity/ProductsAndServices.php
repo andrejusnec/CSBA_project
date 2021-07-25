@@ -285,10 +285,10 @@ class ProductsAndServices
     {
         $this->fontawesome_icon = $fontawesome_icon;
     }
-    public function images() : ?Image {
-
-        if($this->images != []) {
-            return $this->images[0]->getFileName();
-        }
-    }
+//    public function images() : ?Image {
+//
+//        if($this->images != []) {
+//            return $this->images[0]->getFileName();
+//        }
+//    }
 }

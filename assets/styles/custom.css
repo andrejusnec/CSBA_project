@@ -50,4 +50,8 @@ ul, #myUL {
 
 .active {
     display: block;
+    color: #0a0a0a;
+}
+.activeBread {
+    color: #0a0a0a;
 }
