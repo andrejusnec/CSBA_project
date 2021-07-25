@@ -17,7 +17,7 @@ class ProductsAndServices
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    private $id;
 
     /**
      * @ORM\Column(type="boolean")
@@ -25,15 +25,15 @@ class ProductsAndServices
     private ?bool $isProduct;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="product_id")
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="product")
      */
-    private ArrayCollection $images;
+    private $images;
 
     /**
      * @ORM\ManyToOne(targetEntity=Measure::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true, name="measure_code_id", referencedColumnName="code")
      */
-    private ?Measure $measure_code;
+    private $measure_code;
 
     /**
      * @ORM\Column(type="boolean")
@@ -46,6 +46,11 @@ class ProductsAndServices
     private ?string $title;
 
     /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private ?string $fontawesome_icon;
+
+    /**
      * @ORM\OneToMany(targetEntity=ProductOrderList::class, mappedBy="product")
      */
     private $productOrderLists;
@@ -54,6 +59,39 @@ class ProductsAndServices
      * @ORM\OneToMany(targetEntity=ProductBalance::class, mappedBy="product")
      */
     private $productBalances;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private ?bool $isCatalog;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ProductsAndServices::class)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     */
+    private ?ProductsAndServices $parent;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Image::class)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     */
+    private $main_image;
+
+    /**
+     * @return mixed
+     */
+    public function getMainImage()
+    {
+        return $this->main_image;
+    }
+
+    /**
+     * @param mixed $main_image
+     */
+    public function setMainImage($main_image): void
+    {
+        $this->main_image = $main_image;
+    }
 
     /**
      * ProductsAndServices constructor.
@@ -207,4 +245,50 @@ class ProductsAndServices
 
         return $this;
     }
+
+    public function getIsCatalog(): ?bool
+    {
+        return $this->isCatalog;
+    }
+
+    public function setIsCatalog(bool $isCatalog): self
+    {
+        $this->isCatalog = $isCatalog;
+
+        return $this;
+    }
+
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?self $parent): self
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+    public function __toString() {
+        return $this->title;
+    }
+    public function getfontawesome_icon(): ?string
+    {
+        return $this->fontawesome_icon;
+    }
+    public function getFontawesomeIcon(): ?string
+    {
+        return $this->fontawesome_icon;
+    }
+
+    public function setFontawesomeIcon(?string $fontawesome_icon): void
+    {
+        $this->fontawesome_icon = $fontawesome_icon;
+    }
+//    public function images() : ?Image {
+//
+//        if($this->images != []) {
+//            return $this->images[0]->getFileName();
+//        }
+//    }
 }

@@ -19,19 +19,20 @@ class ProductBalance
 
     /**
      * @ORM\ManyToOne(targetEntity=ProductSupply::class)
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $product_supply;
+    private ?ProductSupply $product_supply;
 
     /**
      * @ORM\ManyToOne(targetEntity=ProductsAndServices::class, inversedBy="productBalances")
-     * @ORM\JoinColumn(nullable=false)
      */
-    private $product;
+    private ?ProductsAndServices $product;
 
     /**
      * @ORM\ManyToOne(targetEntity=Order::class)
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $order_id;
+    private ?Order $order_id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Size::class)

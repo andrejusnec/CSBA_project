@@ -15,7 +15,7 @@ class Country
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    private $id;
 
     /**
      * @ORM\Column(type="boolean")
@@ -54,5 +54,9 @@ class Country
         $this->title = $title;
 
         return $this;
+    }
+
+    public function __toString() {
+        return $this->title;
     }
 }

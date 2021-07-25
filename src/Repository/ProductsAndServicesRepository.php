@@ -19,6 +19,18 @@ class ProductsAndServicesRepository extends ServiceEntityRepository
         parent::__construct($registry, ProductsAndServices::class);
     }
 
+    /**
+     * @return ProductsAndServices[] Returns an array of ProductsAndServices objects
+     */
+    public function getParents(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.parent is null')
+            ->andWhere('p.isActive = :val')
+            ->setParameter('val', true)
+            ->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return ProductsAndServices[] Returns an array of ProductsAndServices objects
     //  */
@@ -47,4 +59,5 @@ class ProductsAndServicesRepository extends ServiceEntityRepository
         ;
     }
     */
+
 }

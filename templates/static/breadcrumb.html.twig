@@ -1,0 +1,22 @@
+{% block breadCrumb %}
+<!-- Breadcrumb Start -->
+<div class="breadcrumb-wrap">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ path('home') }}" class="{{app.request.attributes.get('_route') == 'home' ? 'activeBread' : ''}}">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ path('pages/product_list') }}" class="{{app.request.attributes.get('_route') == 'pages/product_list' ? 'activeBread' : ''}}">All Products</a>
+            </li>
+{#            <li class="breadcrumb-item">#}
+{#                <a href="{{ path('pages/product_list_show') }}" class="{{app.request.attributes.get('_route') starts with 'pages/product_list_show' ? 'active' : ' '}}">Category details</a>#}
+{#            </li>#}
+            <li class="breadcrumb-item">
+                <a href="{{ path('pages/product_details') }}" class="{{app.request.attributes.get('_route') == 'pages/product_details' ? 'activeBread' : ''}}">Product details</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+{% endblock %}

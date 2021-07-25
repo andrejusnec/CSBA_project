@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\MeasureRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Id;
 
 /**
  * @ORM\Entity(repositoryClass=MeasureRepository::class)
@@ -12,15 +13,9 @@ class Measure
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id;
-
-    /**
      * @ORM\Column(type="string", length=3)
      */
-    private ?string $code;
+    private $code;
 
     /**
      * @ORM\Column(type="string", length=20)
@@ -71,5 +66,8 @@ class Measure
         $this->full_name = $full_name;
 
         return $this;
+    }
+    public function __toString() {
+        return $this->full_name;
     }
 }

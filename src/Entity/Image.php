@@ -3,10 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\ImageRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
+use Vich\UploaderBundle\Entity\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 
 /**
  * @ORM\Entity(repositoryClass=ImageRepository::class)
+ * @Vich\Uploadable()
  */
 class Image
 {
@@ -15,18 +21,20 @@ class Image
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $file_name;
+    private $file_name;
+
+
 
     /**
      * @ORM\ManyToOne(targetEntity=ProductsAndServices::class, inversedBy="images")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
-    private ?ProductsAndServices $product;
+    public ?ProductsAndServices $product;
 
     /**
      * @ORM\Column(type="boolean")
@@ -37,6 +45,22 @@ class Image
      * @ORM\Column(type="string", length=255)
      */
     private ?string $title;
+
+    /**
+     * @Vich\UploadableField(mapping="thumbnails", fileNameProperty="file_name")
+     * @var File
+     */
+    private $thumbnail;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -72,7 +96,7 @@ class Image
         return $this->file_name;
     }
 
-    public function setFileName(string $file_name): self
+    public function setFileName(?string $file_name): self
     {
         $this->file_name = $file_name;
 
@@ -90,4 +114,52 @@ class Image
 
         return $this;
     }
+
+    public function getProduct(): ?ProductsAndServices
+    {
+        return $this->product;
+    }
+
+
+    public function setProduct(?ProductsAndServices $product): self
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getThumbnail(): mixed
+    {
+        return $this->thumbnail;
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\File\File|null $thumbnail
+     */
+    public function setThumbnail(\Symfony\Component\HttpFoundation\File\File $thumbnail = null): void
+    {
+        $this->thumbnail = $thumbnail;
+        if ($thumbnail) {
+            $this->createdAt = new DateTime();
+        }
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+    public function __toString() {
+        return $this->file_name;
+    }
+
 }

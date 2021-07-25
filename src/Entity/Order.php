@@ -75,6 +75,7 @@ class Order
     public function __construct()
     {
         $this->productOrderLists = new ArrayCollection();
+        $this->date = new \DateTime('Europe/Vilnius');
     }
 
     public function getId(): ?int
@@ -218,5 +219,8 @@ class Order
         $this->user = $user;
 
         return $this;
+    }
+    public function __toString() {
+        return $this->order_number;
     }
 }
