@@ -27,7 +27,7 @@
 
             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                 <div class="navbar-nav mr-auto">
-                    <a href="{{ path('main') }}" class="nav-item nav-link active">Home</a>
+                    <a href="{{ path('home') }}" class="nav-item nav-link {{app.request.attributes.get('_route') == 'home' ? 'active' : ' '}}">Home</a>
                     <a href="{{ path('pages/product_list') }}" class="nav-item nav-link">Products</a>
                     <a href="{{ path('pages/product_details') }}" class="nav-item nav-link">Product Detail</a>
                     <a href="{{ path('pages/cart') }}" class="nav-item nav-link">Cart</a>
@@ -63,7 +63,7 @@
         <div class="row align-items-center">
             <div class="col-md-3">
                 <div class="logo">
-                    <a href="{{ path('main') }}">
+                    <a href="{{ path('home') }}">
                         <img class="header-logo" src="{{ asset('build/images/logo.png') }}" alt="Logo">
                     </a>
                 </div>
