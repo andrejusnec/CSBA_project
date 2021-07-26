@@ -1,7 +1,7 @@
 {% block productList %}
 
-    {% if selectedProduct is defined %}
-        {% set data = selectedProduct %}
+    {% if selectedProducts is defined %}
+        {% set data = selectedProducts %}
     {% else %}
         {% set data = allProducts %}
     {% endif %}

@@ -2403,3 +2403,22 @@ h2 {
         text-align: center;
     }
 }
+@media (max-width: 1140px) {
+    .col-lg-8 {
+        position: relative;
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        flex: none;
+        max-width: 100%;
+    }
+    .col-lg-4 {
+        position: relative;
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        flex: none;
+        max-width: 50%;
+        margin: auto;
+    }
+}

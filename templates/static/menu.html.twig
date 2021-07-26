@@ -4,16 +4,17 @@
             {% if id is defined %}
             {% set caret_arrow, active = 'caret-down', 'active'  %}
             {% endif %}
-            {% macro render_map(allCategories) %}
+
+            {% macro render_map(allCategories, product_id = null) %}
                 {% import _self as macros %}
 
                 {% for value in allCategories %}
                     <li>
                     <a class="{{ value.children is not empty ? 'caret' : ''}}"
-                       href="{{ value.children is empty ? path('pages/product_list_show', { slug: value.category.id }) : '#' }}"><i
+                       href="{{ path('pages/product_list_show', { slug: value.category.id })}}"><i
                                 class="{{ value.category.fontawesome_icon }}"></i>{{ value.category.title }}</a>
                     {% if value.children is not empty %}
-                        <ul class="nested {{ id is defined  ? active : '' }}">
+                        <ul class="nested {{ product_id == value.category.id  ? 'active' : '' }}">
                             {{ macros.render_map(value.children) }}
                         </ul>
                     {% endif %}

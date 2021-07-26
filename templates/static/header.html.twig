@@ -29,7 +29,6 @@
                 <div class="navbar-nav mr-auto">
                     <a href="{{ path('home') }}" class="nav-item nav-link {{app.request.attributes.get('_route') == 'home' ? 'active' : ' '}}">Home</a>
                     <a href="{{ path('pages/product_list') }}" class="nav-item nav-link">Products</a>
-                    <a href="{{ path('pages/product_details') }}" class="nav-item nav-link">Product Detail</a>
                     <a href="{{ path('pages/cart') }}" class="nav-item nav-link">Cart</a>
                     <a href="{{ path('pages/checkout') }}" class="nav-item nav-link">Checkout</a>
                     <a href="{{ path('pages/my_account') }}" class="nav-item nav-link">My Account</a>
@@ -37,7 +36,7 @@
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More Pages</a>
                         <div class="dropdown-menu">
                             <a href="{{ path('pages/wishlist') }}" class="dropdown-item">Wishlist</a>
-                            <a href="{{ path('pages/login') }}" class="dropdown-item">Login & Register</a>
+                            <a href="{{ path('app_login') }}" class="dropdown-item">Login & Register</a>
                             <a href="{{ path('pages/contact') }}" class="dropdown-item">Contact Us</a>
                         </div>
                     </div>

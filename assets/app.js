@@ -14,6 +14,8 @@ import './js/slick/slick-theme.css';
 require('@fortawesome/fontawesome-free/css/all.min.css');
 import './styles/app.css';
 import './styles/custom.css';
+import './styles/account.css';
+import './styles/login.css';
 
 //JS
 

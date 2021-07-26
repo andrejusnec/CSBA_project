@@ -6,10 +6,11 @@
         function toggleNavbarMethod() {
             if ($(window).width() > 768) {
                 $('.navbar .dropdown').on('click', function () {
-                    $('.dropdown-toggle', this).trigger('click');
-                }).on('click', function () {
-                    $('.dropdown-toggle', this).trigger('click').blur();
-                });
+                    $('.dropdown-toggle', this).triggerHandler('click');
+                })
+                //     .on('click', function () {
+                //     $('.dropdown-toggle', this).trigger('click').blur();
+                // });
             } else {
                 $('.navbar .dropdown').off('mouseover').off('mouseout');
             }

@@ -29,7 +29,8 @@ class TestController extends AbstractController
     public function main(): Response
     {
         $allCategories = $this->manager->hierarchy();
-        return $this->render('pages/main.html.twig', ['allCategories' => $allCategories]);
+        return $this->render('pages/main.html.twig',
+            ['allCategories' => $allCategories, 'user' => $this->getUser()]);
     }
 
     /**
@@ -104,13 +105,14 @@ class TestController extends AbstractController
      */
     public function product_list_show($slug): Response
     {
+        $selectedProducts = [];
+        $this->manager->getAllCategoryProducts($slug, $selectedProducts);
 
-        $selectedProduct = $this->manager->findCategoryProducts($slug);
         $allCategories = $this->manager->hierarchy();
         return $this->render('pages/product_list.html.twig',
             ['allCategories' => $allCategories,
-                'selectedProduct' => $selectedProduct,
-                'ide' => $slug]);
+                'selectedProducts' => $selectedProducts,
+                'product_id' => $slug]);
     }
 
     /**
