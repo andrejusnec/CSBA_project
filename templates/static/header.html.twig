@@ -35,20 +35,26 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More Pages</a>
                         <div class="dropdown-menu">
+                            {% if app.user %}
                             <a href="{{ path('pages/wishlist') }}" class="dropdown-item">Wishlist</a>
+                            {% endif %}
                             <a href="{{ path('app_login') }}" class="dropdown-item">Login & Register</a>
                             <a href="{{ path('pages/contact') }}" class="dropdown-item">Contact Us</a>
                         </div>
                     </div>
                 </div>
                 <div class="navbar-nav ml-auto">
+                    {% if app.user %}
+                        <a href="{{ path('pages/my_account')}}" class="nav-link">{{ app.user.email }}</a>
+                    {% else %}
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Account</a>
                         <div class="dropdown-menu">
-                            <a href="#" class="dropdown-item">Login</a>
-                            <a href="#" class="dropdown-item">Register</a>
+                            <a href="{{ path('app_login') }}" class="dropdown-item">Login</a>
+                            <a href="{{ path('app_register') }}" class="dropdown-item">Register</a>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </nav>
@@ -73,6 +79,7 @@
                     <button><i class="fa fa-search"></i></button>
                 </div>
             </div>
+            {% if app.user %}
             <div class="col-md-3">
                 <div class="user">
                     <a href="{{ path('pages/wishlist') }}" class="btn wishlist">
@@ -85,6 +92,7 @@
                     </a>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>

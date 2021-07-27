@@ -55,3 +55,6 @@ ul, #myUL {
 .activeBread {
     color: #0a0a0a;
 }
+tbody > tr > td > button > a {
+    color: white;
+}

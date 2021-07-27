@@ -26,9 +26,10 @@ security:
                 path: app_logout
                 target: app_login
             remember_me:
-                name: COOKIE
                 secret: '%kernel.secret%'
-                lifetime: 3600
+                lifetime: 604800
+                path: /
+                always_remember_me: true
 
 
             # activate different ways to authenticate

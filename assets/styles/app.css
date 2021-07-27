@@ -746,10 +746,17 @@ h2 {
     background: #ffffff;
     transition: .3s;
 }
-
+@media(max-width:767px ) {
+    product-item .product-image img {
+        width: 100%;
+        transition: all .3s;
+        height: 100%;
+    }
+}
 .product-item .product-image img {
     width: 100%;
     transition: all .3s;
+    height: 200px;
 }
 
 .product-item:hover .product-image img {

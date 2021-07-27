@@ -27,6 +27,7 @@ import './bootstrap';
 require('bootstrap/dist/js/bootstrap.bundle');
 const jQuery = require('jquery');
 import './js/custom.js';
+import './js/wishlist.js';
 
 
 

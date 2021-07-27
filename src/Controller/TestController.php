@@ -3,24 +3,31 @@
 namespace App\Controller;
 
 
-use App\Manager\BaseManager;
 use App\Manager\ProductAndServicesManager;
+use App\Manager\WishListManager;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 class TestController extends AbstractController
 {
-    private ProductAndServicesManager $manager;
+    private ProductAndServicesManager $productManager;
+    private Security $security;
+    private WishListManager $wishListManager;
 
     /**
      * TestController constructor.
      */
-    public function __construct(ProductAndServicesManager $manager)
+    public function __construct(ProductAndServicesManager $productManager,
+                                Security $security,
+                                WishListManager $wishListManager)
     {
-        $this->manager = $manager;
+        $this->productManager = $productManager;
+        $this->security = $security;
+        $this->wishListManager = $wishListManager;
     }
 
     /**
@@ -28,7 +35,7 @@ class TestController extends AbstractController
      */
     public function main(): Response
     {
-        $allCategories = $this->manager->hierarchy();
+        $allCategories = $this->productManager->hierarchy();
         return $this->render('pages/main.html.twig',
             ['allCategories' => $allCategories, 'user' => $this->getUser()]);
     }
@@ -46,7 +53,7 @@ class TestController extends AbstractController
      */
     public function product_details_show($slug): Response
     {
-        $product = $this->manager->findOne($slug);
+        $product = $this->productManager->findOne($slug);
         return $this->render('pages/product_details.html.twig', ['product' => $product]);
     }
 
@@ -95,8 +102,8 @@ class TestController extends AbstractController
      */
     public function product_list(): Response
     {
-        $allProducts = $this->manager->findAllProducts();
-        $allCategories = $this->manager->hierarchy();
+        $allProducts = $this->productManager->findAllProducts();
+        $allCategories = $this->productManager->hierarchy();
         return $this->render('pages/product_list.html.twig', ['allCategories' => $allCategories, 'allProducts' => $allProducts]);
     }
 
@@ -106,9 +113,9 @@ class TestController extends AbstractController
     public function product_list_show($slug): Response
     {
         $selectedProducts = [];
-        $this->manager->getAllCategoryProducts($slug, $selectedProducts);
+        $this->productManager->getAllCategoryProducts($slug, $selectedProducts);
 
-        $allCategories = $this->manager->hierarchy();
+        $allCategories = $this->productManager->hierarchy();
         return $this->render('pages/product_list.html.twig',
             ['allCategories' => $allCategories,
                 'selectedProducts' => $selectedProducts,
@@ -120,7 +127,11 @@ class TestController extends AbstractController
      */
     public function wishlist(): Response
     {
-        return $this->render('pages/wishlist.html.twig');
+        $currentUser = $this->security->getUser();
+        $wishList = $currentUser->getId();
+        $arr = $this->wishListManager->getAllUserWishLists($wishList);
+        //dd($arr);
+        return $this->render('pages/wishlist.html.twig', ['wishList' => $arr]);
     }
 
 }
