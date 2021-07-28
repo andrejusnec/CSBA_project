@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Manager\CartManager;
 use App\Manager\WishListManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,7 +27,7 @@ class WishListController extends AbstractController
     }
 
     /**
-     * @Route("wishlists/{product}/{user}", name="kazkas")
+     * @Route("wishlists/{product<\d+>}/{user<\d+>}", name="add_to_wishlist", methods="POST")
      */
     public function addToWishList($product, $user)
     {
@@ -35,7 +36,7 @@ class WishListController extends AbstractController
     }
 
     /**
-     * @Route("wishlist_remove/{product}", name="wishlist_remove")
+     * @Route("wishlist_remove/{product<\d+>}", name="wishlist_remove", methods="POST")
      */
     public function removeWish($product): RedirectResponse
     {
@@ -44,7 +45,7 @@ class WishListController extends AbstractController
     }
 
     /**
-     * @Route("cart_add/{product}/{user}/{fromWishList}", name="cart", defaults={"fromWishList":false})
+     * @Route("cart_add/{product<\d+>}/{user<\d+>}/{fromWishList<false|true>}", name="cart_add", methods="POST", defaults={"fromWishList":false})
      */
     public function addToCart($product, $user, $fromWishList)
     {
@@ -52,17 +53,28 @@ class WishListController extends AbstractController
             $this->wishListManager->removeFromWishList($product);
         }
         $this->cartManager->createCart($product, $user);
-
-        return new Response('success');
+        $currentlyInTheCart = count($this->cartManager->getAllUserCartItems($user));
+        return $this->json(['cart_count' => $currentlyInTheCart]);
     }
 
     /**
-     * @Route("cart_remove/{product}", name="cart_remove")
+     * @Route("cart_remove/{product<\d+>}", name="cart_remove", methods="GET")
      */
     public function removeFromCart($product): RedirectResponse
     {
         $this->cartManager->removeItem($product);
         return $this->redirectToRoute('pages/cart');
     }
-
+    /**
+     * @Route("cart_quantity/{product}/{user}/{direction}", name="cart_quantity", methods="POST")
+     */
+    public function cartQuantity($product, $user, $direction) {
+        if($direction === 'plus') {
+            $this->cartManager->createCart($product, $user);
+        } elseif ($direction === 'minus') {
+            $this->cartManager->editCart($user, $product);
+        }
+        $amount = $this->cartManager->getCartTotal($product, $user);
+        return $this->json(['cart' => $amount]);
+    }
 }

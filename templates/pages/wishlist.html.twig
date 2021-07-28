@@ -30,7 +30,7 @@
                                 {% if app.user and wishList %}
                                 <tbody class="align-middle">
                                     {% for wish in wishList %}
-                                <tr>
+                                <tr class="wishlist-element">
                                     <td>
                                         <div class="img">
                                             <a href="#"><img src="{{ asset('uploads/images/') }}{{ wish.product.MainImage is not empty ? wish.product.MainImage.FileName : '#' }}" alt="{{ wish.product.title }}"></a>
@@ -40,7 +40,7 @@
 
                                     <td>
                                         <button class="btn-cart add-to-cart">
-                                            <a class ="addToCart" data-secret="true" data-product="{{ wish.product.id }}" data-user="{{ app.user.id}}" href="#">Add to Cart</a>
+                                            <a class ="addToCart delete_cart" data-secret="true" data-product="{{ wish.product.id }}" data-user="{{ app.user.id}}" href="#">Add to Cart</a>
                                         </button>
                                     </td>
                                     <td>

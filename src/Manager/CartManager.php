@@ -30,33 +30,54 @@ class CartManager
     }
 
 
-    public function createCart($product, $user) : ?bool
+    public function createCart($product, $user)
     {
-        $flag = false;
-        if($this->repository->findOneBy(['user'=> $user, 'product'=> $product]) === null) {
+        $cart = $this->repository->findOneBy(['user' => $user, 'product' => $product]);
+        if ($cart === null) {
             $cart = new Cart();
             $cart->setUser($this->userManager->repository->find($user));
             $cart->setProduct($this->productManager->findOne($product));
             $cart->setPrice(99.9);
             $cart->setQuantity(1);
             $cart->setTotal(99.9 * 1);
-            $this->entityManager->persist($cart);
-            $this->entityManager->flush();
-            $flag = true;
+        } else {
+            $amount = $cart->getQuantity() + 1;
+            $cart->setQuantity($amount);
+            $cart->setTotal($cart->getPrice() * $amount);
         }
-        return $flag;
+        $this->entityManager->persist($cart);
+        $this->entityManager->flush();
     }
+
     public function getAllUserCartItems($id)
     {
-        return $this->repository->findBy(['user'=> $id]);
+        return $this->repository->findBy(['user' => $id]);
+    }
+
+    public function getCartTotal($product, $user)
+    {
+        $cart = $this->repository->findOneBy(['product' => $product, 'user' => $user]);
+        return $cart->getTotal();
     }
 
 
     public function removeItem($product)
     {
-        $cart = $this->repository->findOneBy(['product'=> $product]);
+        $cart = $this->repository->findOneBy(['product' => $product]);
         $this->entityManager->remove($cart);
         $this->entityManager->flush();
+    }
+
+    public function editCart( $user, $product)
+    {
+        $cart = $this->repository->findOneBy(['user' => $user, 'product' => $product]);
+        $amount = $cart->getQuantity();
+        if ($amount > 1) {
+            $cart->setTotal($cart->getTotal() - $cart->getPrice());
+            $cart->setQuantity($cart->getQuantity() - 1);
+            $this->entityManager->persist($cart);
+            $this->entityManager->flush();
+        }
     }
 
 }
