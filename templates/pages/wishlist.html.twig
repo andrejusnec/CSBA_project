@@ -39,7 +39,9 @@
                                     </td>
 
                                     <td>
-                                        <button class="btn-cart">Add to Cart</button>
+                                        <button class="btn-cart add-to-cart">
+                                            <a class ="addToCart" data-secret="true" data-product="{{ wish.product.id }}" data-user="{{ app.user.id}}" href="#">Add to Cart</a>
+                                        </button>
                                     </td>
                                     <td>
                                         <button><a href="{{ path('wishlist_remove', {'product' : wish.product.id}) }}"><i class="fa fa-trash"></i></a></button>
@@ -47,6 +49,7 @@
                                 </tr>
                                     {% endfor %}
                                 {% endif %}
+                                </tbody>
                             </table>
                         </div>
                     </div>

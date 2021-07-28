@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Manager\CartManager;
 use App\Manager\ProductAndServicesManager;
 use App\Manager\WishListManager;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -17,17 +18,20 @@ class TestController extends AbstractController
     private ProductAndServicesManager $productManager;
     private Security $security;
     private WishListManager $wishListManager;
+    private CartManager $cartManager;
 
     /**
      * TestController constructor.
      */
     public function __construct(ProductAndServicesManager $productManager,
                                 Security $security,
-                                WishListManager $wishListManager)
+                                WishListManager $wishListManager,
+                                CartManager $cartManager)
     {
         $this->productManager = $productManager;
         $this->security = $security;
         $this->wishListManager = $wishListManager;
+        $this->cartManager = $cartManager;
     }
 
     /**
@@ -62,7 +66,10 @@ class TestController extends AbstractController
      */
     public function cart(): Response
     {
-        return $this->render('pages/cart.html.twig');
+        $currentUser = $this->security->getUser();
+        $cart = $this->cartManager->getAllUserCartItems($currentUser->getId());
+
+        return $this->render('pages/cart.html.twig', ['cart' => $cart]);
     }
 
     /**
@@ -128,10 +135,9 @@ class TestController extends AbstractController
     public function wishlist(): Response
     {
         $currentUser = $this->security->getUser();
-        $wishList = $currentUser->getId();
-        $arr = $this->wishListManager->getAllUserWishLists($wishList);
-        //dd($arr);
-        return $this->render('pages/wishlist.html.twig', ['wishList' => $arr]);
+        $wishLists = $this->wishListManager->getAllUserWishLists($currentUser->getId());
+
+        return $this->render('pages/wishlist.html.twig', ['wishList' => $wishLists]);
     }
 
 }

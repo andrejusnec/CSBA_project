@@ -24,9 +24,9 @@
                         <img src="{{ asset('uploads/images/') }}{{ value.MainImage is not empty ? value.MainImage.FileName : '#' }}"
                              alt="{{ value.title }}">
                     </a>
-                    <div class="product-action add-to-wishlist">
-                        <a href="#"><i class="fa fa-cart-plus"></i></a>
+                    <div class="product-action add-to-wishlist add-to-cart">
                         {% if app.user %}
+                            <a class ="addToCart" data-product="{{ value.id }}" data-user="{{ app.user.id}}" href="#"><i class="fa fa-cart-plus"></i></a>
                             <a class ="wishListAdd" data-add="{{ value.id }}" data-user="{{ app.user.id}}" href="#"><i class="fa fa-heart"></i></a>
                         {% endif %}
                         <a href="{{ path('pages/product_details_show', {'slug' : value.id}) }}"><i class="fa fa-search"></i></a>
