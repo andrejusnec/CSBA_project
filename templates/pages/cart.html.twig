@@ -11,7 +11,7 @@
     </div>
 </div>
 <!-- Breadcrumb End -->
-
+    {% if app.user and cart %}
 <!-- Cart Start -->
 <div class="cart-page">
     <div class="container-fluid">
@@ -29,9 +29,10 @@
                                 <th>Remove</th>
                             </tr>
                             </thead>
-                            {% if app.user and cart %}
+                            {% set totalAmount, shipping = 0, 1 %}
                             <tbody class="align-middle">
                             {% for item in cart %}
+                                {% set totalAmount = totalAmount + item.total %}
                             <tr class="cart-item-full">
                                 <td>
                                     <div class="img">
@@ -39,7 +40,7 @@
                                         <p>{{ item.product.title }}</p>
                                     </div>
                                  </td>
-                                <td>$99</td>
+                                <td>{{ item.product.getCurrentPrice(pm)|format_currency('EUR') }}</td>
                                 <td>
                                     <div class="qty">
                                         <button class="btn-minus cart-amount" data-cart="{{ item.id }}" data-product="{{ item.product.id }}" data-user="{{ app.user.id }}" data-direction="minus">
@@ -49,11 +50,11 @@
                                             <i class="fa fa-plus"></i></button>
                                     </div>
                                 </td>
-                                <td><span id="{{ item.id }}">{{ item.total }}</span></td>
+                                <td><span id="{{ item.id }}">{{ item.total|format_currency('EUR') }}</span></td>
                                 <td><button><a href="{{ path('cart_remove', {'product' : item.product.id}) }}"><i class="fa fa-trash"></i></a></button></td>
                             </tr>
                             {% endfor %}
-                            {% endif %}
+
                             </tbody>
                         </table>
                     </div>
@@ -66,12 +67,13 @@
                             <div class="cart-summary">
                                 <div class="cart-content">
                                     <h1>Cart Summary</h1>
-                                    <p>Sub Total<span>$99</span></p>
-                                    <p>Shipping Cost<span>$1</span></p>
-                                    <h2>Grand Total<span>$100</span></h2>
+                                    <p>Sub Total<span>{{ totalAmount | format_currency('EUR') }}</span></p>
+                                    <p>Shipping Cost<span>{{ shipping | format_currency('EUR') }}</span></p>
+                                    {% set finalTotal = totalAmount + shipping  %}
+                                    <h2>Grand Total<span>{{ finalTotal | format_currency('EUR') }}</span></h2>
                                 </div>
                                 <div class="cart-btn">
-                                    <button>Update Cart</button>
+                                    <button><a href="{{ path('pages/cart')}}">Update Cart</a></button>
                                     <button>Checkout</button>
                                 </div>
                             </div>
@@ -82,5 +84,6 @@
         </div>
     </div>
 </div>
+                            {% endif %}
 <!-- Cart End -->
 {% endblock %}

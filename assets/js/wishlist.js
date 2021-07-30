@@ -43,7 +43,9 @@ $cartContainer.find('.cart-amount').on('click', function(e) {
             method: 'POST'
         }).then(function (response){
             let cart = $link.data('cart');
-            $('#'+cart).text(response.cart);
+            let price = parseFloat(response.cart);
+            price = price.toFixed(2);
+            $('#'+cart).text('€'+price);
         })
 
 });

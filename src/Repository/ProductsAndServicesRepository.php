@@ -34,19 +34,21 @@ class ProductsAndServicesRepository extends ServiceEntityRepository
     // /**
     //  * @return ProductsAndServices[] Returns an array of ProductsAndServices objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    /**
+     * @return int|mixed|string
+     */
+    public function findOnlyActiveProducts()
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('prod')
+            ->andWhere('prod.isProduct = :val')
+            ->andWhere('prod.isActive = :val')
+            ->setParameter('val', true)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?ProductsAndServices

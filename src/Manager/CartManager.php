@@ -14,6 +14,7 @@ class CartManager
     private UserManager $userManager;
     private ProductAndServicesManager $productManager;
     private EntityManagerInterface $entityManager;
+    private PriceManager $priceManager;
 
     /**
      * ProductAndServicesManager constructor.
@@ -21,12 +22,13 @@ class CartManager
      * @param UserManager $userManager
      * @param ProductAndServicesManager $productManager
      */
-    public function __construct(CartRepository $repository, ProductAndServicesManager $productManager, UserManager $userManager, EntityManagerInterface $entityManager)
+    public function __construct(PriceManager $priceManager, CartRepository $repository, ProductAndServicesManager $productManager, UserManager $userManager, EntityManagerInterface $entityManager)
     {
         $this->repository = $repository;
         $this->userManager = $userManager;
         $this->productManager = $productManager;
         $this->entityManager = $entityManager;
+        $this->priceManager = $priceManager;
     }
 
 
@@ -37,9 +39,9 @@ class CartManager
             $cart = new Cart();
             $cart->setUser($this->userManager->repository->find($user));
             $cart->setProduct($this->productManager->findOne($product));
-            $cart->setPrice(99.9);
+            $cart->setPrice($cart->getProduct()->getCurrentPrice($this->priceManager));
             $cart->setQuantity(1);
-            $cart->setTotal(99.9 * 1);
+            $cart->setTotal($cart->getPrice() * 1);
         } else {
             $amount = $cart->getQuantity() + 1;
             $cart->setQuantity($amount);
@@ -49,12 +51,12 @@ class CartManager
         $this->entityManager->flush();
     }
 
-    public function getAllUserCartItems($id)
+    public function getAllUserCartItems($id): ?array
     {
         return $this->repository->findBy(['user' => $id]);
     }
 
-    public function getCartTotal($product, $user)
+    public function getCartTotal($product, $user) : float
     {
         $cart = $this->repository->findOneBy(['product' => $product, 'user' => $user]);
         return $cart->getTotal();

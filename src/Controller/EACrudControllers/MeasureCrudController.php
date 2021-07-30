@@ -17,7 +17,7 @@ class MeasureCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('code'),
+            TextField::new('code', 'International code'),
             TextField::new('short_name')->setLabel('Shortcut'),
             TextField::new('full_name')->setLabel('Full name')
         ];

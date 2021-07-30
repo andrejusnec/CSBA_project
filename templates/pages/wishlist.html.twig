@@ -11,7 +11,7 @@
         </div>
     </div>
     <!-- Breadcrumb End -->
-
+    {% if app.user and wishList %}
     <!-- Wishlist Start -->
     <div class="wishlist-page">
         <div class="container-fluid">
@@ -27,14 +27,13 @@
                                     <th>Remove</th>
                                 </tr>
                                 </thead>
-                                {% if app.user and wishList %}
                                 <tbody class="align-middle">
                                     {% for wish in wishList %}
                                 <tr class="wishlist-element">
                                     <td>
                                         <div class="img">
                                             <a href="#"><img src="{{ asset('uploads/images/') }}{{ wish.product.MainImage is not empty ? wish.product.MainImage.FileName : '#' }}" alt="{{ wish.product.title }}"></a>
-                                            <p>{{ wish.product.title }}</p>
+                                            <a href="{{ path('pages/product_details_show', {'slug' : wish.product.id }) }}"><p>{{ wish.product.title }}</p></a>
                                         </div>
                                     </td>
 
@@ -48,7 +47,6 @@
                                     </td>
                                 </tr>
                                     {% endfor %}
-                                {% endif %}
                                 </tbody>
                             </table>
                         </div>
@@ -57,5 +55,6 @@
             </div>
         </div>
     </div>
+    {% endif %}
     <!-- Wishlist End -->
 {% endblock %}

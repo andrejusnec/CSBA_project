@@ -4,9 +4,9 @@ namespace App\Controller;
 
 
 use App\Manager\CartManager;
+use App\Manager\PriceManager;
 use App\Manager\ProductAndServicesManager;
 use App\Manager\WishListManager;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +19,7 @@ class TestController extends AbstractController
     private Security $security;
     private WishListManager $wishListManager;
     private CartManager $cartManager;
+    private PriceManager $priceManager;
 
     /**
      * TestController constructor.
@@ -26,12 +27,14 @@ class TestController extends AbstractController
     public function __construct(ProductAndServicesManager $productManager,
                                 Security $security,
                                 WishListManager $wishListManager,
-                                CartManager $cartManager)
+                                CartManager $cartManager,
+                                PriceManager $priceManager)
     {
         $this->productManager = $productManager;
         $this->security = $security;
         $this->wishListManager = $wishListManager;
         $this->cartManager = $cartManager;
+        $this->priceManager = $priceManager;
     }
 
     /**
@@ -40,8 +43,9 @@ class TestController extends AbstractController
     public function main(): Response
     {
         $allCategories = $this->productManager->hierarchy();
+        $price = ($this->priceManager->getPriceByPeriod(403));
         return $this->render('pages/main.html.twig',
-            ['allCategories' => $allCategories, 'user' => $this->getUser()]);
+            ['allCategories' => $allCategories, 'user' => $this->getUser(), 'period' => $price]);
     }
 
     /**
@@ -49,7 +53,7 @@ class TestController extends AbstractController
      */
     public function product_details(): Response
     {
-        return $this->render('pages/product_details.html.twig');
+        return $this->render('pages/product_details.html.twig', ['pm' => $this->priceManager]);
     }
 
     /**
@@ -58,7 +62,7 @@ class TestController extends AbstractController
     public function product_details_show($slug): Response
     {
         $product = $this->productManager->findOne($slug);
-        return $this->render('pages/product_details.html.twig', ['product' => $product]);
+        return $this->render('pages/product_details.html.twig', ['product' => $product, 'pm' => $this->priceManager]);
     }
 
     /**
@@ -66,10 +70,12 @@ class TestController extends AbstractController
      */
     public function cart(): Response
     {
+        $cart = null;
         $currentUser = $this->security->getUser();
-        $cart = $this->cartManager->getAllUserCartItems($currentUser->getId());
-
-        return $this->render('pages/cart.html.twig', ['cart' => $cart]);
+        if ($currentUser !== null) {
+            $cart = $this->cartManager->getAllUserCartItems($currentUser->getId());
+        }
+        return $this->render('pages/cart.html.twig', ['cart' => $cart, 'pm' => $this->priceManager]);
     }
 
     /**
@@ -111,7 +117,9 @@ class TestController extends AbstractController
     {
         $allProducts = $this->productManager->findAllProducts();
         $allCategories = $this->productManager->hierarchy();
-        return $this->render('pages/product_list.html.twig', ['allCategories' => $allCategories, 'allProducts' => $allProducts]);
+        return $this->render('pages/product_list.html.twig', ['allCategories' => $allCategories,
+            'allProducts' => $allProducts,
+            'pm' => $this->priceManager]);
     }
 
     /**
@@ -126,7 +134,8 @@ class TestController extends AbstractController
         return $this->render('pages/product_list.html.twig',
             ['allCategories' => $allCategories,
                 'selectedProducts' => $selectedProducts,
-                'product_id' => $slug]);
+                'product_id' => $slug,
+                'pm' => $this->priceManager]);
     }
 
     /**
@@ -134,10 +143,13 @@ class TestController extends AbstractController
      */
     public function wishlist(): Response
     {
+        $wishLists = null;
         $currentUser = $this->security->getUser();
-        $wishLists = $this->wishListManager->getAllUserWishLists($currentUser->getId());
+        if ($currentUser !== null) {
+            $wishLists = $this->wishListManager->getAllUserWishLists($currentUser->getId());
+        }
 
-        return $this->render('pages/wishlist.html.twig', ['wishList' => $wishLists]);
+        return $this->render('pages/wishlist.html.twig', ['wishList' => $wishLists, 'pm' => $this->priceManager]);
     }
 
 }

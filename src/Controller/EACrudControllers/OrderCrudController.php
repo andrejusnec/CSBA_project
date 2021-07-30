@@ -22,15 +22,19 @@ class OrderCrudController extends AbstractCrudController
     {
         return [
             TextField::new('address')->onlyOnForms(),
-            AssociationField::new('country')->onlyOnForms(),
+            AssociationField::new('country')->onlyOnForms()->setQueryBuilder(function($queryBuilder){
+                return $queryBuilder->andWhere('entity.isActive = :val')->setParameter('val', true);
+            }),
             TextField::new('city')->onlyOnForms(),
             TextField::new('post_code')->onlyOnForms(),
             TextField::new('order_number'),
             TimeField::new('date')->setLabel('Time')->onlyOnIndex(),
             DateField::new('date')->onlyOnIndex(),
-            BooleanField::new('isActive'),
+            BooleanField::new('isActive', 'Active'),
             BooleanField::new('status'),
-            AssociationField::new('user')
+            AssociationField::new('user', 'User email')->setQueryBuilder(function($queryBuilder){
+                return $queryBuilder->andWhere('entity.isVerified = :val')->setParameter('val', true);
+            }),
         ];
     }
 
