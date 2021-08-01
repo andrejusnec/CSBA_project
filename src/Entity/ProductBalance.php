@@ -34,17 +34,6 @@ class ProductBalance
      */
     private ?Order $order_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Size::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $size;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Color::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $color;
 
     /**
      * @ORM\Column(type="decimal", precision=18, scale=3)
@@ -97,29 +86,6 @@ class ProductBalance
         return $this;
     }
 
-    public function getSize(): ?Size
-    {
-        return $this->size;
-    }
-
-    public function setSize(?Size $size): self
-    {
-        $this->size = $size;
-
-        return $this;
-    }
-
-    public function getColor(): ?Color
-    {
-        return $this->color;
-    }
-
-    public function setColor(?Color $color): self
-    {
-        $this->color = $color;
-
-        return $this;
-    }
 
     public function getQuantity(): ?string
     {

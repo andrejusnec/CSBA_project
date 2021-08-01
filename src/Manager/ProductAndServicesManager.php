@@ -39,9 +39,9 @@ class ProductAndServicesManager
         }
         $sortedArr = [];
         for ($i = 0; $i < count($data); $i++) {
-            $sortedArr[] = ['category' => $data[$i],
+            $sortedArr[] = array('category' => $data[$i],
                 'children' => (new ProductAndServicesManager($this->repository))->hierarchy($data[$i]->getId()
-                )];
+                ));
         }
         return $sortedArr;
     }
@@ -49,6 +49,19 @@ class ProductAndServicesManager
     public function findCategoryProducts(int $id): array
     {
         return $this->repository->findBy(['isProduct' => true, 'isActive' => true, 'parent' => $id]);
+    }
+
+    public function getAllCategoryProducts($id, &$array) : void
+    {
+        $data = $this->repository->findBy(['isActive' => true, 'parent' => $id]);
+        foreach ($data as $value) {
+            //$array[] = $value;
+            if ($value->getIsCatalog()) {
+                $this->getAllCategoryProducts($value->getId(), $array);
+            } elseif ($value->getIsProduct()) {
+                $array[] = $value;
+            }
+        }
     }
 
     public function findAllProducts(): array

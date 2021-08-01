@@ -19,13 +19,13 @@ class ImageCrudController extends AbstractCrudController
     }
 
 
+
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('title'),
-            BooleanField::new('isActive'),
+            TextField::new('title', 'Image name'),
+            BooleanField::new('isActive', 'Active'),
             ImageField::new('file_name', 'Image')
-//                ->setBasePath('%uploads_path%')
                 ->onlyOnIndex()
                 ->setBasePath('/uploads/images/'),
             TextareaField::new('thumbnail', 'Image')

@@ -27,10 +27,9 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
             MeasureFixtures::class,
         ];
     }
+
     public function load(ObjectManager $manager)
     {
-        ColorFactory::createMany(20);
-        SizeFactory::createMany(6);
         ProductsAndServicesFactory::new()
             ->onlyCatalogAndNoParent()
             ->many(5)
@@ -53,22 +52,21 @@ class AppFixtures extends Fixture implements DependentFixtureInterface
         }
 
         ImageFactory::createMany(5,
-            function() {
-                return ['product' => ProductsAndServicesFactory::find(['isProduct' =>true, 'isActive' => true])];
+            function () {
+                return ['product' => ProductsAndServicesFactory::find(['isProduct' => true, 'isActive' => true])];
             });
         CountryFactory::createMany(10);
         ProductSupplyFactory::createMany(10);
         ProductSupplyListFactory::createMany(5);
         UserFactory::createMany(10);
         OrderFactory::createMany(12,
-            function() {
+            function () {
                 return ['user' => UserFactory::randomOrCreate(), 'country' => CountryFactory::randomOrCreate()];
             });
         ProductBalanceFactory::createMany(10);
         ProductOrderListFactory::createMany(10);
 
         $products = ProductsAndServicesFactory::findBy(['main_image' => null, 'isProduct' => true]);
-        //dd($products);
         foreach ($products as $product) {
             //dd(ImageFactory::random());
             $product->object()->setMainImage(ImageFactory::createOne(['product' => $product->object()])->object());

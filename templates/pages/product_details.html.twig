@@ -41,7 +41,7 @@
                                         </div>
                                         <div class="price">
                                             <h4>Price:</h4>
-                                            <p>$99 <span>$149</span></p>
+                                            <p>{{ product.getCurrentPrice(pm)|format_currency('EUR')}}</p>
                                         </div>
                                         <div class="quantity">
                                             <h4>Quantity:</h4>

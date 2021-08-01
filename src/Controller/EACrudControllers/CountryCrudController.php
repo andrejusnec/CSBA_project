@@ -19,9 +19,9 @@ class CountryCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('title')->onlyOnIndex(),
+            TextField::new('title')->onlyOnIndex()->setLabel('Country'),
             CountryField::new('title')->onlyOnForms(),
-            BooleanField::new('isActive'),
+            BooleanField::new('isActive')->setLabel('Active')
         ];
     }
 }

@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Color;
+use App\Entity\Cart;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Color|null find($id, $lockMode = null, $lockVersion = null)
- * @method Color|null findOneBy(array $criteria, array $orderBy = null)
- * @method Color[]    findAll()
- * @method Color[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Cart|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Cart|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Cart[]    findAll()
+ * @method Cart[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ColorRepository extends ServiceEntityRepository
+class CartRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Color::class);
+        parent::__construct($registry, Cart::class);
     }
 
     // /**
-    //  * @return Color[] Returns an array of Color objects
+    //  * @return Cart[] Returns an array of Cart objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class ColorRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Color
+    public function findOneBySomeField($value): ?Cart
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')
