@@ -9,8 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ProductOrderListManager
 {
-private ProductOrderListRepository $repository;
-private PriceManager $pm;
+    private ProductOrderListRepository $repository;
+    private PriceManager $pm;
 
 
     public function __construct(ProductOrderListRepository $repository, PriceManager $pm)
@@ -19,7 +19,13 @@ private PriceManager $pm;
         $this->pm = $pm;
     }
 
-    public function createProductOrderLists($cartWithProducts, EntityManagerInterface $em) {
+    public function getAll($order_id): array
+    {
+        return $this->repository->findBy(['order_id' => $order_id]);
+    }
+
+    public function createProductOrderLists($cartWithProducts, EntityManagerInterface $em): array
+    {
         $productOrderListArray = [];
         foreach ($cartWithProducts as $cart) {
             $productOrderList = new ProductOrderList();

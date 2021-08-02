@@ -10,6 +10,7 @@ use App\Manager\CountryManager;
 use App\Manager\OrderManager;
 use App\Manager\PriceManager;
 use App\Manager\ProductAndServicesManager;
+use App\Manager\ProductOrderListManager;
 use App\Manager\WishListManager;
 use App\Service\SumHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -91,6 +92,7 @@ class TestController extends AbstractController
     {
         $allCountries = $country->allCountries();
         $user = $this->security->getUser();
+        $carts = null;
         if ($user !== null) {
             $carts = $this->cartManager->getAllUserCartItems($user->getId());
         }
@@ -99,7 +101,7 @@ class TestController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $om->newOrder($data, $user, $carts);
-                return $this->redirectToRoute('home');
+            return $this->redirectToRoute('home');
         }
         return $this->render('pages/checkout.html.twig', ['countries' => $allCountries, 'cart' => $carts, 'form' => $form->createView()]);
     }
@@ -131,7 +133,7 @@ class TestController extends AbstractController
         if ($user !== null) {
             $orders = $om->getUserOrders($user);
         }
-        return $this->render('pages/my_account.html.twig', ['orders'=> $orders]);
+        return $this->render('pages/my_account.html.twig', ['orders' => $orders]);
     }
 
     /**
@@ -174,6 +176,15 @@ class TestController extends AbstractController
         }
 
         return $this->render('pages/wishlist.html.twig', ['wishList' => $wishLists, 'pm' => $this->priceManager]);
+    }
+
+    /**
+     * @Route("show_order/{id}", name="pages/show_order")
+     */
+    public function showOrderItem($id, ProductOrderListManager $pm): Response
+    {
+        $productOrderLists = $pm->getAll($id);
+        return $this->render('pages/show_order.html.twig', ['productOrderLists' => $productOrderLists ?? null]);
     }
 
 }
