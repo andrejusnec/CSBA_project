@@ -72,6 +72,11 @@ class Order
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="decimal", precision=15, scale=2, nullable=true)
+     */
+    private $order_total;
+
     public function __construct()
     {
         $this->productOrderLists = new ArrayCollection();
@@ -224,5 +229,17 @@ class Order
     }
     public function uniqOrderNumber() {
         $this->order_number = time() . $this->id . mt_rand(1,100000000);;
+    }
+
+    public function getOrderTotal(): ?string
+    {
+        return $this->order_total;
+    }
+
+    public function setOrderTotal(?string $order_total): self
+    {
+        $this->order_total = $order_total;
+
+        return $this;
     }
 }

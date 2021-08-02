@@ -11,6 +11,7 @@ use App\Manager\OrderManager;
 use App\Manager\PriceManager;
 use App\Manager\ProductAndServicesManager;
 use App\Manager\WishListManager;
+use App\Service\SumHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -117,14 +118,20 @@ class TestController extends AbstractController
     public function login(): Response
     {
         return $this->render('pages/login.html.twig');
+
     }
 
     /**
      * @Route("my_account", name="pages/my_account", methods={"GET"})
      */
-    public function my_account(): Response
+    public function my_account(OrderManager $om, SumHelper $sumHelper): Response
     {
-        return $this->render('pages/my_account.html.twig');
+        $orders = null;
+        $user = $this->security->getUser();
+        if ($user !== null) {
+            $orders = $om->getUserOrders($user);
+        }
+        return $this->render('pages/my_account.html.twig', ['orders'=> $orders]);
     }
 
     /**
