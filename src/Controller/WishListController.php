@@ -62,7 +62,9 @@ class WishListController extends AbstractController
      */
     public function removeFromCart($product): RedirectResponse
     {
-        $this->cartManager->removeItem($product);
+            if($this->cartManager->getCart($product) !== null) {
+                $this->cartManager->removeItem($product);
+            }
         return $this->redirectToRoute('pages/cart');
     }
     /**

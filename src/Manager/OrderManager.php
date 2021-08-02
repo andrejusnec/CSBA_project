@@ -47,7 +47,7 @@ class OrderManager
                 $order->setStatus(true);
                 $this->em->persist($order);
 
-                $productOrderLists = $this->productOrderListManager->createProductOrderLists($carts, $order, $this->em);
+                $productOrderLists = $this->productOrderListManager->createProductOrderLists($carts, $this->em,);
                 foreach ($productOrderLists as $list) {
                     $order->addProductOrderList($list);
                 }

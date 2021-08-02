@@ -30,7 +30,9 @@ class CartManager
         $this->entityManager = $entityManager;
         $this->priceManager = $priceManager;
     }
-
+    public function getCart($product_id) {
+        return $this->repository->findOneBy(['product' => $product_id]);
+    }
 
     public function createCart($product, $user)
     {
