@@ -3,12 +3,17 @@
 namespace App\Controller;
 
 
+use App\Entity\Order;
+use App\Form\OrderType;
 use App\Manager\CartManager;
+use App\Manager\CountryManager;
+use App\Manager\OrderManager;
 use App\Manager\PriceManager;
 use App\Manager\ProductAndServicesManager;
 use App\Manager\WishListManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
@@ -25,10 +30,10 @@ class TestController extends AbstractController
      * TestController constructor.
      */
     public function __construct(ProductAndServicesManager $productManager,
-                                Security $security,
-                                WishListManager $wishListManager,
-                                CartManager $cartManager,
-                                PriceManager $priceManager)
+                                Security                  $security,
+                                WishListManager           $wishListManager,
+                                CartManager               $cartManager,
+                                PriceManager              $priceManager)
     {
         $this->productManager = $productManager;
         $this->security = $security;
@@ -79,11 +84,23 @@ class TestController extends AbstractController
     }
 
     /**
-     * @Route("checkout", name="pages/checkout", methods={"GET"})
+     * @Route("checkout", name="pages/checkout")
      */
-    public function checkout(): Response
+    public function checkout(CountryManager $country, Request $request, OrderManager $om): Response
     {
-        return $this->render('pages/checkout.html.twig');
+        $allCountries = $country->allCountries();
+        $user = $this->security->getUser();
+        if ($user !== null) {
+            $carts = $this->cartManager->getAllUserCartItems($user->getId());
+        }
+        $form = $this->createForm(OrderType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $om->newOrder($data, $user, $carts);
+                return $this->redirectToRoute('home');
+        }
+        return $this->render('pages/checkout.html.twig', ['countries' => $allCountries, 'cart' => $carts, 'form' => $form->createView()]);
     }
 
     /**

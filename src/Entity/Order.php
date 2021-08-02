@@ -42,7 +42,7 @@ class Order
     private $post_code;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=25)
      */
     private $order_number;
 
@@ -75,7 +75,6 @@ class Order
     public function __construct()
     {
         $this->productOrderLists = new ArrayCollection();
-        $this->date = new \DateTime('Europe/Vilnius');
     }
 
     public function getId(): ?int
@@ -222,5 +221,8 @@ class Order
     }
     public function __toString() {
         return $this->order_number;
+    }
+    public function uniqOrderNumber() {
+        $this->order_number = time() . $this->id . mt_rand(1,100000000);;
     }
 }
