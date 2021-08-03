@@ -41,7 +41,7 @@ class ProductSupply
     private ?bool $status;
 
     /**
-     * @ORM\OneToMany(targetEntity=ProductSupplyList::class, mappedBy="product_supply")
+     * @ORM\OneToMany(targetEntity=ProductSupplyList::class, mappedBy="product_supply", cascade={"persist", "remove"})
      */
     private $productSupplyLists;
 

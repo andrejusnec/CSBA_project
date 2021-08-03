@@ -20,8 +20,6 @@ class ProductOrderListCrudController extends AbstractCrudController
         return [
             AssociationField::new('order_id')->onlyOnForms(),
             AssociationField::new('product'),
-            AssociationField::new('size')->onlyOnForms(),
-            AssociationField::new('color')->onlyOnForms(),
             NumberField::new('quantity'),
             NumberField::new('price'),
             NumberField::new('total'),
