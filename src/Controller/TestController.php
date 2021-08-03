@@ -3,12 +3,19 @@
 namespace App\Controller;
 
 
+use App\Entity\Order;
+use App\Form\OrderType;
 use App\Manager\CartManager;
+use App\Manager\CountryManager;
+use App\Manager\OrderManager;
 use App\Manager\PriceManager;
 use App\Manager\ProductAndServicesManager;
+use App\Manager\ProductOrderListManager;
 use App\Manager\WishListManager;
+use App\Service\SumHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
@@ -25,10 +32,10 @@ class TestController extends AbstractController
      * TestController constructor.
      */
     public function __construct(ProductAndServicesManager $productManager,
-                                Security $security,
-                                WishListManager $wishListManager,
-                                CartManager $cartManager,
-                                PriceManager $priceManager)
+                                Security                  $security,
+                                WishListManager           $wishListManager,
+                                CartManager               $cartManager,
+                                PriceManager              $priceManager)
     {
         $this->productManager = $productManager;
         $this->security = $security;
@@ -79,11 +86,24 @@ class TestController extends AbstractController
     }
 
     /**
-     * @Route("checkout", name="pages/checkout", methods={"GET"})
+     * @Route("checkout", name="pages/checkout")
      */
-    public function checkout(): Response
+    public function checkout(CountryManager $country, Request $request, OrderManager $om): Response
     {
-        return $this->render('pages/checkout.html.twig');
+        $allCountries = $country->allCountries();
+        $user = $this->security->getUser();
+        $carts = null;
+        if ($user !== null) {
+            $carts = $this->cartManager->getAllUserCartItems($user->getId());
+        }
+        $form = $this->createForm(OrderType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $om->newOrder($data, $user, $carts);
+            return $this->redirectToRoute('home');
+        }
+        return $this->render('pages/checkout.html.twig', ['countries' => $allCountries, 'cart' => $carts, 'form' => $form->createView()]);
     }
 
     /**
@@ -100,14 +120,20 @@ class TestController extends AbstractController
     public function login(): Response
     {
         return $this->render('pages/login.html.twig');
+
     }
 
     /**
      * @Route("my_account", name="pages/my_account", methods={"GET"})
      */
-    public function my_account(): Response
+    public function my_account(OrderManager $om, SumHelper $sumHelper): Response
     {
-        return $this->render('pages/my_account.html.twig');
+        $orders = null;
+        $user = $this->security->getUser();
+        if ($user !== null) {
+            $orders = $om->getUserOrders($user);
+        }
+        return $this->render('pages/my_account.html.twig', ['orders' => $orders]);
     }
 
     /**
@@ -150,6 +176,15 @@ class TestController extends AbstractController
         }
 
         return $this->render('pages/wishlist.html.twig', ['wishList' => $wishLists, 'pm' => $this->priceManager]);
+    }
+
+    /**
+     * @Route("show_order/{id}", name="pages/show_order")
+     */
+    public function showOrderItem($id, ProductOrderListManager $pm): Response
+    {
+        $productOrderLists = $pm->getAll($id);
+        return $this->render('pages/show_order.html.twig', ['productOrderLists' => $productOrderLists ?? null]);
     }
 
 }

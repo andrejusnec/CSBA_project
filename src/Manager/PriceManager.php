@@ -24,7 +24,7 @@ class PriceManager
         return $this->repository->findAllByProductAndDate($product_id);
     }
 
-    public function getPriceByPeriod($product_id): int
+    public function getPriceByPeriod($product_id)
     {
         $priceList = $this->getAllByProductAndDate($product_id);
         if($priceList !== null && $priceList !== []) {
@@ -34,13 +34,4 @@ class PriceManager
         }
     }
 
-    public function getOldAndHigherPrice($product_id) :int
-    {
-        $priceList = $this->getAllByProductAndDate($product_id);
-        if($priceList !== null && $priceList !== []) {
-            return $priceList[0]->getPrice();
-        } else {
-            return 0;
-        }
-    }
 }
