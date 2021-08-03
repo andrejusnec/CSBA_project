@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\ProductsAndServices;
+use App\Entity\ProductSupply;
 use App\Entity\ProductSupplyList;
 use App\Repository\ProductsAndServicesRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -19,7 +20,10 @@ class ProductSupplyListType extends AbstractType
     {
         $builder
             ->add('quantity', NumberType::class)
-            ->add('product_supply')
+//            ->add('product_supply', EntityType::class, [
+//                'class' => ProductSupply::class,
+//                'disabled' => 'disabled'
+//            ])
             ->add('product', EntityType::class, [
                 'class' => ProductsAndServices::class,
                 'query_builder' => function (ProductsAndServicesRepository $repo) {
@@ -29,7 +33,6 @@ class ProductSupplyListType extends AbstractType
                         ->setParameter('val', true);
                 },
                 'choice_label' => 'title',
-                'attr' => ['class' => 'form-widget']
             ])
         ;
     }

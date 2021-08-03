@@ -125,7 +125,6 @@ class ProductSupply
     public function removeProductSupplyList(ProductSupplyList $productSupplyList): self
     {
         if ($this->productSupplyLists->removeElement($productSupplyList)) {
-            // set the owning side to null (unless already changed)
             if ($productSupplyList->getProductSupply() === $this) {
                 $productSupplyList->setProductSupply(null);
             }

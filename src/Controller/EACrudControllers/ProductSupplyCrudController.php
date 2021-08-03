@@ -47,8 +47,9 @@ class ProductSupplyCrudController extends AbstractCrudController
                 ->setFormTypeOptions([
                     'entry_type' =>ProductSupplyListType::class,
                     'by_reference' => false,
-                    'allow_add' => true])
-                ->setEntryIsComplex(true),
+                    'allow_add' => true,
+                    'attr' => ['class' => 'form-group']])
+                ->setEntryIsComplex(true)->hideOnIndex(),
 
         ];
     }
