@@ -1,31 +1,41 @@
 {% extends"base.html.twig" %}
 {% block body %}
-    <div class="col-md-8" style="margin: auto">
-        <div class="table-responsive">
-            <table class="table table-bordered" style="text-align: center">
-                <thead class="thead-dark">
-                <tr>
-                    <th>View</th>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Total</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% if productOrderLists is not null %}
-                    {% for item in productOrderLists %}
-                    <tr>
-                        <td><img style="width: 50px; height: 50px; margin: auto" src="{{ asset('uploads/images/') }}{{ item.product.mainImage }}" alt="{{ item.product.mainImage }}"/></td>
-                        <td>{{ item.product.title }}</td>
-                        <td>{{ item.quantity }}</td>
-                        <td>{{ item.price | format_currency('EUR') }}</td>
-                        <td>{{ item.total | format_currency('EUR') }}</td>
-                    </tr>
-                    {% endfor %}
-                {% endif %}
-                </tbody>
-            </table>
+    {% if order is not null %}
+        <div class="col-md-8" style="margin: auto">
+            <h5 style="font-weight: 600">Order details</h5>
+            <p><strong>Order number : </strong>{{ order.orderNumber }}</p>
+            <p><strong>Date : </strong>{{ order.date |format_datetime() }}</p>
+            <p><strong>Total : </strong>{{ order.orderTotal | format_currency('EUR') }}<p>
         </div>
-    </div>
+    {% endif %}
+        <div class="col-md-8" style="margin: auto">
+            <div class="table-responsive">
+                <table class="table table-bordered" style="text-align: center">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>View</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if productOrderLists is not null %}
+                        {% for item in productOrderLists %}
+                            <tr>
+                                <td><img style="width: 50px; height: 50px; margin: auto"
+                                         src="{{ asset('uploads/images/') }}{{ item.product.mainImage }}"
+                                         alt="{{ item.product.mainImage }}"/></td>
+                                <td>{{ item.product.title }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.price | format_currency('EUR') }}</td>
+                                <td>{{ item.total | format_currency('EUR') }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 {% endblock %}

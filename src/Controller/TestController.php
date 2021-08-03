@@ -87,6 +87,7 @@ class TestController extends AbstractController
 
     /**
      * @Route("checkout", name="pages/checkout")
+     * @throws \Doctrine\DBAL\ConnectionException
      */
     public function checkout(CountryManager $country, Request $request, OrderManager $om): Response
     {
@@ -101,7 +102,8 @@ class TestController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $om->newOrder($data, $user, $carts);
-            return $this->redirectToRoute('home');
+            $this->addFlash('success', 'You have successfully placed your order.');
+            return $this->redirectToRoute('pages/my_account');
         }
         return $this->render('pages/checkout.html.twig', ['countries' => $allCountries, 'cart' => $carts, 'form' => $form->createView()]);
     }
@@ -181,10 +183,11 @@ class TestController extends AbstractController
     /**
      * @Route("show_order/{id}", name="pages/show_order")
      */
-    public function showOrderItem($id, ProductOrderListManager $pm): Response
+    public function showOrderItem($id, ProductOrderListManager $pm, OrderManager $om): Response
     {
         $productOrderLists = $pm->getAll($id);
-        return $this->render('pages/show_order.html.twig', ['productOrderLists' => $productOrderLists ?? null]);
+        $order = $om->getOrder($id);
+        return $this->render('pages/show_order.html.twig', ['productOrderLists' => $productOrderLists ?? null, 'order'=> $order ?? null]);
     }
 
 }

@@ -34,7 +34,7 @@
                             <table class="table table-bordered">
                                 <thead class="thead-dark">
                                 <tr>
-                                    <th>No</th>
+                                    <th>Order nr.</th>
                                     <th>Date</th>
                                     <th>Total</th>
                                     <th>Status</th>
@@ -42,7 +42,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for order in orders %}
+                                {% for order in orders |sort((a, b) => b.date <=> a.date) %}
                                 <tr>
                                     <td>{{order.orderNumber}}</td>
                                     <td>{{ order.date |format_datetime() }}</td>
