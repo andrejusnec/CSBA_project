@@ -44,7 +44,7 @@ class DashboardController extends AbstractDashboardController
         return [
             //MenuItem::linktoDashboard('Dashboard', 'fa fa-home'),
             MenuItem::subMenu('List', 'fa fa-list')->setSubItems([
-                MenuItem::linkToCrud('Users', 'fas fa-user', User::class) ,
+                MenuItem::linkToCrud('Users', 'fas fa-user', User::class),
                 MenuItem::linkToCrud('Products And Services', 'fas fa-angle-right', ProductsAndServices::class),
                 MenuItem::linkToCrud('Measures', 'fas fa-angle-right', Measure::class),
                 MenuItem::linkToCrud('Images', 'fas fa-angle-right', Image::class),

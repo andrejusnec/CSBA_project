@@ -41,7 +41,7 @@ class ProductSupply
     private ?bool $status;
 
     /**
-     * @ORM\OneToMany(targetEntity=ProductSupplyList::class, mappedBy="product_supply")
+     * @ORM\OneToMany(targetEntity=ProductSupplyList::class, mappedBy="product_supply", cascade={"persist", "remove"})
      */
     private $productSupplyLists;
 
@@ -125,7 +125,6 @@ class ProductSupply
     public function removeProductSupplyList(ProductSupplyList $productSupplyList): self
     {
         if ($this->productSupplyLists->removeElement($productSupplyList)) {
-            // set the owning side to null (unless already changed)
             if ($productSupplyList->getProductSupply() === $this) {
                 $productSupplyList->setProductSupply(null);
             }
