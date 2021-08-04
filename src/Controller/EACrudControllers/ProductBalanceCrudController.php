@@ -3,6 +3,10 @@
 namespace App\Controller\EACrudControllers;
 
 use App\Entity\ProductBalance;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -27,10 +31,6 @@ class ProductBalanceCrudController extends AbstractCrudController
             AssociationField::new('order_id')->onlyOnForms()->setLabel('Order number')->setQueryBuilder(function($queryBuilder){
                 return $queryBuilder->andWhere('entity.isActive = :val')->setParameter('val', true);
             }),
-            AssociationField::new('size')->onlyOnForms()->setQueryBuilder(function($queryBuilder){
-                return $queryBuilder->andWhere('entity.isActive = :val')->setParameter('val', true);
-            }),
-            AssociationField::new('color')->onlyOnForms(),
             NumberField::new('quantity'),
             NumberField::new('reserved')
         ];

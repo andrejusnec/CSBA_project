@@ -9,6 +9,7 @@ use App\Form\Type\CollectionComplexType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -55,7 +56,15 @@ class ProductSupplyCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+        $createProductBalance = Action::new('createBalance', 'test', 'fa fa-file-invoice')
+            ->linkToCrudAction('createProductBalance');
         return $actions
-            ->add(Crud::PAGE_INDEX, Action::DETAIL);
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->add(Crud::PAGE_INDEX, $createProductBalance);
+    }
+
+    public function createProductBalance(AdminContext $context) {
+        $productBalance = $context->getEntity()->getInstance();
+        dd($productBalance);
     }
 }
