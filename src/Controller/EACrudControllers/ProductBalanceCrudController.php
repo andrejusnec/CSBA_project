@@ -22,7 +22,7 @@ class ProductBalanceCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            AssociationField::new('product_supply')->onlyOnForms()->setQueryBuilder(function($queryBuilder){
+            AssociationField::new('product_supply')->setQueryBuilder(function($queryBuilder){
                 return $queryBuilder->andWhere('entity.isActive = :val')->setParameter('val', true);
             }),
             AssociationField::new('product')->setQueryBuilder(function($queryBuilder){

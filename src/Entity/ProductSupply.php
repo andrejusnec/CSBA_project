@@ -10,7 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 
 /**
  * @ORM\Entity(repositoryClass=ProductSupplyRepository::class)
- * @ORM\EntityListeners({"App\EventListener\ProductSupplyCreateNotifier"})
+ * @ORM\EntityListeners({"App\EventListener\ProductSupplyCreateNotifier", "App\EventListener\ProductSupplyStatusListener"})
  */
 class ProductSupply
 {
