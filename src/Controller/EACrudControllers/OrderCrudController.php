@@ -3,10 +3,14 @@
 namespace App\Controller\EACrudControllers;
 
 use App\Entity\Order;
+use App\Form\ProductOrderListType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 
@@ -32,10 +36,20 @@ class OrderCrudController extends AbstractCrudController
             DateField::new('date')->onlyOnIndex(),
             BooleanField::new('isActive', 'Active'),
             BooleanField::new('status'),
+            NumberField::new('order_total')->onlyOnForms(),
             AssociationField::new('user', 'User email')->setQueryBuilder(function($queryBuilder){
                 return $queryBuilder->andWhere('entity.isVerified = :val')->setParameter('val', true);
             }),
+            FormField::addPanel('Product Order Items'),
+            CollectionField::new('productOrderLists', 'Product Order Lists')
+                ->setFormTypeOptions([
+                    'entry_type' =>ProductOrderListType::class,
+                    'by_reference' => false,
+                    'allow_add' => true,
+                    'attr' => ['class' => 'form-group']])
+                ->setEntryIsComplex(true)->hideOnIndex(),
         ];
+
     }
 
 }

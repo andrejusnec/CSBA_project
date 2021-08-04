@@ -50,7 +50,6 @@ class ProductSupplyCrudController extends AbstractCrudController
                     'allow_add' => true,
                     'attr' => ['class' => 'form-group']])
                 ->setEntryIsComplex(true)->hideOnIndex(),
-
         ];
     }
 
