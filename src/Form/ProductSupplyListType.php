@@ -20,10 +20,6 @@ class ProductSupplyListType extends AbstractType
     {
         $builder
             ->add('quantity', NumberType::class)
-//            ->add('product_supply', EntityType::class, [
-//                'class' => ProductSupply::class,
-//                'disabled' => 'disabled'
-//            ])
             ->add('product', EntityType::class, [
                 'class' => ProductsAndServices::class,
                 'query_builder' => function (ProductsAndServicesRepository $repo) {

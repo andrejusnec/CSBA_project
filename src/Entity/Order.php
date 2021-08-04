@@ -62,7 +62,7 @@ class Order
     private $status;
 
     /**
-     * @ORM\OneToMany(targetEntity=ProductOrderList::class, mappedBy="order_id")
+     * @ORM\OneToMany(targetEntity=ProductOrderList::class, mappedBy="order_id", cascade={"persist", "remove"})
      */
     private $productOrderLists;
 

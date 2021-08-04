@@ -41,6 +41,7 @@
                                     <th>Action</th>
                                 </tr>
                                 </thead>
+                                {% if orders is defined and orders is not null %}
                                 <tbody>
                                 {% for order in orders |sort((a, b) => b.date <=> a.date) %}
                                 <tr>
@@ -51,6 +52,7 @@
                                     <td><a href="{{ path('pages/show_order', {'id' : order.id}) }}"><button class="btn">View</button></a></td>
                                 </tr>
                                 {% endfor %}
+                                {% endif %}
                                 </tbody>
                             </table>
                         </div>

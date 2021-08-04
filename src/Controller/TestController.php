@@ -13,6 +13,7 @@ use App\Manager\ProductAndServicesManager;
 use App\Manager\ProductOrderListManager;
 use App\Manager\WishListManager;
 use App\Service\SumHelper;
+use PHPUnit\Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

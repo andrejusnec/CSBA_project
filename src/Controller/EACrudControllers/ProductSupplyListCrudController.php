@@ -32,7 +32,6 @@ class ProductSupplyListCrudController extends AbstractCrudController
 
             NumberField::new('quantity'),
             AssociationField::new('product'),
-            FormField::addPanel('qq'),
             AssociationField::new('product_supply')
 
         ];
