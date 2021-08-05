@@ -31,7 +31,7 @@ class OrderCrudController extends AbstractCrudController
             }),
             TextField::new('city')->onlyOnForms(),
             TextField::new('post_code')->onlyOnForms(),
-//            TextField::new('uniqOrderNumber'),
+            TextField::new('uniqOrderNumber')->onlyOnIndex(),
             TimeField::new('date')->setLabel('Time')->onlyOnIndex(),
             DateField::new('date')->onlyOnIndex(),
             BooleanField::new('isActive', 'Active'),

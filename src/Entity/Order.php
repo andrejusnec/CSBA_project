@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
  * @ORM\Table(name="`order`")
+ * @ORM\EntityListeners({"App\EventListener\OrderCreateListener", "App\EventListener\OrderEditListener"})
  */
 class Order
 {
@@ -187,9 +188,9 @@ class Order
     }
 
     /**
-     * @return Collection|ProductOrderList[]
+     * @return Collection|null
      */
-    public function getProductOrderLists(): Collection
+    public function getProductOrderLists(): ?Collection
     {
         return $this->productOrderLists;
     }
