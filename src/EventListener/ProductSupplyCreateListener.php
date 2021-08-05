@@ -7,7 +7,7 @@ use App\Entity\ProductSupply;
 use Doctrine\ORM\Mapping\PostPersist;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
-class ProductSupplyCreateNotifier
+class ProductSupplyCreateListener
 {
     /**
      * @param ProductSupply $productSupply
@@ -20,7 +20,6 @@ class ProductSupplyCreateNotifier
     public function postPersistHandler(ProductSupply $productSupply, LifecycleEventArgs $event): void
     {
         $em = $event->getObjectManager();
-        //dd($test);
         if ($productSupply->getIsActive() && $productSupply->getStatus()) {
             $productListArray = $productSupply->getProductSupplyLists();
             if ([] !== $productListArray && null !== $productListArray) {
@@ -35,13 +34,6 @@ class ProductSupplyCreateNotifier
                 }
                 $em->flush();
             }
-//        }elseif (false === $productSupply->getIsActive() || false === $productSupply->getStatus()) {
-//                $repo = $em->getRepository(ProductBalance::class);
-//                $allProductBalances = $repo->findBy(['product_supply' => $productSupply]);
-//                foreach ($allProductBalances as $value) {
-//                    $em->persist($value);
-//                }
-//                $em->flush();
         }
     }
 

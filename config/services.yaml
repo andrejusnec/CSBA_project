@@ -6,18 +6,24 @@
 parameters:
     uploads_path: '/uploads/images/'
 services:
-    App\EventListener\ProductSupplyCreateNotifier:
+    App\EventListener\ProductSupplyCreateListener:
         tags:
             - # these are the options required to define the entity listener
                 name: 'doctrine.orm.entity_listener'
                 event: 'postPersistHandler'
                 entity: 'App\Entity\ProductSupply'
-    App\EventListener\ProductSupplyStatusListener:
+    App\EventListener\ProductSupplyEditListener:
         tags:
             - # these are the options required to define the entity listener
                 name: 'doctrine.orm.entity_listener'
                 event: 'postUpdateHandler'
                 entity: 'App\Entity\ProductSupply'
+    App\EventListener\ProductSupplyListEditListener:
+        tags:
+            - # these are the options required to define the entity listener
+                name: 'doctrine.orm.entity_listener'
+                event: 'postUpdateHandler'
+                entity: 'App\Entity\ProductSupplyList'
                 # these are other options that you may define if needed
 
                 # set the 'lazy' option to TRUE to only instantiate listeners when they are used

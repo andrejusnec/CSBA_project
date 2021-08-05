@@ -31,7 +31,9 @@ class ImageCrudController extends AbstractCrudController
             TextareaField::new('thumbnail', 'Image')
                 ->onlyOnForms()
                 ->setFormType(VichImageType::class),
-            AssociationField::new('product')
+            AssociationField::new('product')->setQueryBuilder(function($queryBuilder){
+                return $queryBuilder->andWhere('entity.isActive = :val')->andWhere('entity.isProduct = :val')->setParameter('val', true);
+            }),
         ];
     }
 

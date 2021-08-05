@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -80,6 +81,8 @@ class Order
     public function __construct()
     {
         $this->productOrderLists = new ArrayCollection();
+        $this->order_number = self::uniqOrderNumber();
+        $this->date = new DateTime('Europe/Vilnius');
     }
 
     public function getId(): ?int
@@ -224,11 +227,16 @@ class Order
 
         return $this;
     }
-    public function __toString() {
+
+    public function __toString()
+    {
         return $this->order_number;
     }
-    public function uniqOrderNumber() {
-        $this->order_number = time() . $this->id . mt_rand(1,100000000);;
+
+    public function uniqOrderNumber()
+    {
+        $this->order_number = time() . $this->id . mt_rand(1, 100000000);
+        return $this->order_number;
     }
 
     public function getOrderTotal(): ?string

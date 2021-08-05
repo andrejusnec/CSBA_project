@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ProductSupplyListRepository::class)
+ * @ORM\EntityListeners({"App\EventListener\ProductSupplyListEditListener"})
  */
 class ProductSupplyList
 {
