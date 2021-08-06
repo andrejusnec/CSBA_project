@@ -39,11 +39,18 @@
 
                                     <td>
                                         <button class="btn-cart add-to-cart">
-                                            <a class ="addToCart delete_cart" data-secret="true" data-product="{{ wish.product.id }}" data-user="{{ app.user.id}}" href="#">Add to Cart</a>
+                                            {% set quantity = productManager.getProductAmountInStock(wish.product) %}
+                                                {% if quantity is not null and quantity > 0 %}
+                                            <a class="addToCart delete_cart" data-secret="true" data-product="{{ wish.product.id }}" data-user="{{ app.user.id}}" href="#">Add to Cart</a>
+                                                {% else %}
+                                                    <a href="#" disabled="">Out of Stock</a>
+                                                {% endif %}
                                         </button>
                                     </td>
                                     <td>
-                                        <button><a href="{{ path('wishlist_remove', {'product' : wish.product.id}) }}"><i class="fa fa-trash"></i></a></button>
+                                        <form action="{{ path('wishlist_remove', {'product' : wish.product.id}) }}" method="post">
+                                            <button name="data" ><i class="fa fa-trash"></i></button>
+                                        </form>
                                     </td>
                                 </tr>
                                     {% endfor %}

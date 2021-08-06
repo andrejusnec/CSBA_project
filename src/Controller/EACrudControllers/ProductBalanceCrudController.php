@@ -28,7 +28,7 @@ class ProductBalanceCrudController extends AbstractCrudController
             AssociationField::new('product')->setQueryBuilder(function($queryBuilder){
                 return $queryBuilder->andWhere('entity.isActive = :val')->andWhere('entity.isProduct = :val')->setParameter('val', true);
             }),
-            AssociationField::new('order_id')->onlyOnForms()->setLabel('Order number')->setQueryBuilder(function($queryBuilder){
+            AssociationField::new('order_id')->setLabel('Order number')->setQueryBuilder(function($queryBuilder){
                 return $queryBuilder->andWhere('entity.isActive = :val')->setParameter('val', true);
             }),
             NumberField::new('quantity'),

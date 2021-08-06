@@ -44,16 +44,18 @@ class DashboardController extends AbstractDashboardController
         return [
             MenuItem::subMenu('List', 'fa fa-list')->setSubItems([
                 MenuItem::linkToCrud('Users', 'fas fa-user', User::class),
-                MenuItem::linkToCrud('Products And Services', 'fas fa-angle-right', ProductsAndServices::class),
+                MenuItem::linkToCrud('Products And Services', 'fas fa-product-hunt', ProductsAndServices::class),
                 MenuItem::linkToCrud('Measures', 'fas fa-weight', Measure::class),
                 MenuItem::linkToCrud('Images', 'fas fa-image', Image::class),
-                MenuItem::linkToCrud('Product Supply', 'fas fa-angle-right', ProductSupply::class),
-                MenuItem::linkToCrud('Product Supply List', 'fas fa-angle-right', ProductSupplyList::class),
-                MenuItem::linkToCrud('Order', 'fas fa-file-invoice', Order::class),
-                MenuItem::linkToCrud('Country', 'fas fa-flag', Country::class),
                 MenuItem::linkToCrud('Product Balance', 'fas fa-balance-scale', ProductBalance::class),
-                MenuItem::linkToCrud('Product Order List', 'fas fa-angle-right', ProductOrderList::class),
                 MenuItem::linkToCrud('Prices', 'fas fa-dollar-sign', Price::class),
+                MenuItem::linkToCrud('Country', 'fas fa-flag', Country::class),
+                MenuItem::section('Orders'),
+                MenuItem::linkToCrud('Order', 'fas fa-file-invoice', Order::class),
+                MenuItem::linkToCrud('Product Order List', 'fas fa-archive', ProductOrderList::class),
+                MenuItem::section('Product Supply'),
+                MenuItem::linkToCrud('Product Supply', 'fas fa-file-invoice', ProductSupply::class),
+                MenuItem::linkToCrud('Product Supply List', 'fas fa-archive', ProductSupplyList::class),
             ])
         ];
     }
