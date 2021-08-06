@@ -34,7 +34,13 @@ $cont.find('.addToCart').on('click', function (e) {
 
 
 let $cartContainer = $('.cart-item-full');
-$cartContainer.find('.cart-amount').on('click', function (e) {
+let $test = $cartContainer.find('.current-amount').on('change', function (e) {
+    e.preventDefault();
+    let $linkas = $(e.currentTarget);
+    console.log($linkas.data('counter'))
+    return $linkas.data('counter');
+});
+$cartContainer.find('.cart-amount').on('click', function (e, test) {
     e.preventDefault();
     let $link = $(e.currentTarget);
     $.ajax({
@@ -44,8 +50,8 @@ $cartContainer.find('.cart-amount').on('click', function (e) {
         let cart = $link.data('cart'); //getting data-cart value
         let price = parseFloat(response.cart);
         price = price.toFixed(2);
-
-        // $('#'+currentAmountInCart).val(currentAmount);
+        let quantityInStock = $test.data('counter');
+        $('#'+quantityInStock).val(response.currentAmountInCart);
         $('#' + cart).text('€' + price);
     })
 
