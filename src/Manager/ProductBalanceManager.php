@@ -2,37 +2,47 @@
 
 namespace App\Manager;
 
+use App\Entity\Cart;
 use App\Entity\ProductBalance;
-use App\Entity\ProductSupply;
 use App\Repository\ProductBalanceRepository;
 use App\Service\SumHelper;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use function PHPUnit\Framework\isInstanceOf;
 
 class ProductBalanceManager
 {
-private ProductBalanceRepository $repository;
-private SumHelper $sumHelper;
+    private ProductBalanceRepository $repository;
+    private SumHelper $sumHelper;
+    private EntityManagerInterface $em;
 
     /**
      * @param ProductBalanceRepository $repository
      */
-    public function __construct(ProductBalanceRepository $repository, SumHelper $sumHelper)
+    public function __construct(ProductBalanceRepository $repository, SumHelper $sumHelper, EntityManagerInterface $em)
     {
         $this->repository = $repository;
         $this->sumHelper = $sumHelper;
+        $this->em = $em;
     }
 
-    public function createProductBalance($movementAction, $productSupplyList): ProductBalance
+    public function createProductBalanceFromCart(Cart $cart): ProductBalance
     {
-        $productSupply = $movementAction instanceof ProductSupply;
         $productBalance = new ProductBalance();
-        $productBalance->setProductSupply(true === $productSupply ? $movementAction : null );
-        $productBalance->setOrderId(false === $productSupply ? $movementAction : null );
-        $productBalance->setReserved(0);
-        $productBalance->setProduct($productSupplyList->getProduct());
-        $productBalance->setQuantity(false === $productSupply ? -$productSupplyList->getQuantity() : $productSupplyList->getQuantity());
+        $productBalance->setProductSupply(null);
+        $productBalance->setOrderId(null);
+        $productBalance->setReserved($cart->getQuantity());
+        $productBalance->setProduct($cart->getProduct());
+        $productBalance->setQuantity(-$cart->getQuantity());
+        $productBalance->setCart($cart);
+        return $productBalance;
+    }
+
+    public function editProductBalanceFromCart(Cart $cart): ProductBalance
+    {
+        $productBalance = $this->repository->findOneBy(['cart' => $cart]);
+        $productBalance->setReserved($cart->getQuantity());
+        $productBalance->setQuantity(-$cart->getQuantity());
         return $productBalance;
     }
 
@@ -42,5 +52,10 @@ private SumHelper $sumHelper;
     public function productAmountInStock($product): mixed
     {
         return $this->repository->countProductBalance($product);
+    }
+
+    public function getProductBalanceByCart(Cart $cart): ?ProductBalance
+    {
+        return $this->repository->findOneBy(['cart' => $cart->getId()]);
     }
 }

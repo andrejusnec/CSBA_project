@@ -52,7 +52,12 @@
                                     </div>
                                 </td>
                                 <td><span id="{{ item.id }}">{{ item.total|format_currency('EUR') }}</span></td>
-                                <td><button><a href="{{ path('cart_remove', {'product' : item.product.id}) }}"><i class="fa fa-trash"></i></a></button></td>
+                                <td>
+                                    <form action="{{ path('cart_remove', {product : item.product.id}) }}" method="post">
+                                        <button name="foo" value="{{ item.product.id }}"><i class="fa fa-trash"></i></button>
+                                    </form>
+                                </td>
+{#                                <button><a href="{{ path('cart_remove', {'product' : item.product.id}) }}"><i class="fa fa-trash"></i></a></button>#}
                             </tr>
                             {% endfor %}
 

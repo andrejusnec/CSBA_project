@@ -45,6 +45,11 @@ class ProductBalance
      */
     private $reserved;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Cart::class, cascade={"persist", "remove"})
+     */
+    private $cart;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,6 +112,18 @@ class ProductBalance
     public function setReserved(string $reserved): self
     {
         $this->reserved = $reserved;
+
+        return $this;
+    }
+
+    public function getCart(): ?Cart
+    {
+        return $this->cart;
+    }
+
+    public function setCart(?Cart $cart): self
+    {
+        $this->cart = $cart;
 
         return $this;
     }

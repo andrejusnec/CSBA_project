@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Controller\EACrudControllers\UserCrudController;
+use App\Entity\Cart;
 use App\Entity\Country;
 use App\Entity\Image;
 use App\Entity\Measure;
@@ -50,6 +51,7 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud('Product Balance', 'fas fa-balance-scale', ProductBalance::class),
                 MenuItem::linkToCrud('Prices', 'fas fa-dollar-sign', Price::class),
                 MenuItem::linkToCrud('Country', 'fas fa-flag', Country::class),
+                MenuItem::linkToCrud('Cart', 'fas fa-file-invoice', Cart::class),
                 MenuItem::section('Orders'),
                 MenuItem::linkToCrud('Order', 'fas fa-file-invoice', Order::class),
                 MenuItem::linkToCrud('Product Order List', 'fas fa-archive', ProductOrderList::class),

@@ -5,6 +5,7 @@ namespace App\Manager;
 
 
 use App\Entity\Cart;
+use App\Entity\ProductBalance;
 use App\Repository\CartRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -17,6 +18,7 @@ class CartManager
     private ProductAndServicesManager $productManager;
     private EntityManagerInterface $entityManager;
     private PriceManager $priceManager;
+    private ProductBalanceManager $productBalanceManager;
 
     /**
      * ProductAndServicesManager constructor.
@@ -25,18 +27,21 @@ class CartManager
      * @param ProductAndServicesManager $productManager
      * @param UserManager $userManager
      * @param EntityManagerInterface $entityManager
+     * @param ProductBalanceManager $productBalanceManager
      */
     public function __construct(PriceManager              $priceManager,
                                 CartRepository            $repository,
                                 ProductAndServicesManager $productManager,
                                 UserManager               $userManager,
-                                EntityManagerInterface    $entityManager,)
+                                EntityManagerInterface    $entityManager,
+                                ProductBalanceManager     $productBalanceManager)
     {
         $this->repository = $repository;
         $this->userManager = $userManager;
         $this->productManager = $productManager;
         $this->entityManager = $entityManager;
         $this->priceManager = $priceManager;
+        $this->productBalanceManager = $productBalanceManager;
     }
 
     public function getCart($product_id): ?Cart
@@ -58,6 +63,7 @@ class CartManager
             $cart->setPrice($cart->getProduct()->getCurrentPrice($this->priceManager));
             $cart->setQuantity(1);
             $cart->setTotal($cart->getPrice() * 1);
+            $productBalance = $this->productBalanceManager->createProductBalanceFromCart($cart);
         } else {
             $productEntity = $this->productManager->findOne($product);
             $amountInStock = $this->productManager->getProductAmountInStock($productEntity);
@@ -65,8 +71,13 @@ class CartManager
                 $amount = $cart->getQuantity() + 1;
                 $cart->setQuantity($amount);
                 $cart->setTotal($cart->getPrice() * $amount);
+                $productBalance = $this->productBalanceManager->editProductBalanceFromCart($cart);
             }
         }
+        if(isset($productBalance)) {
+            $this->entityManager->persist( $productBalance );
+        }
+
         $this->entityManager->persist($cart);
         $this->entityManager->flush();
     }
@@ -88,9 +99,11 @@ class CartManager
         return $cart->getQuantity();
     }
 
-    public function removeItem($product)
+    public function removeItem($product, $user_id)
     {
-        $cart = $this->repository->findOneBy(['product' => $product]);
+        $cart = $this->repository->findOneBy(['product' => $product, 'user' => $user_id]);
+        $productBalance = $this->productBalanceManager->getProductBalanceByCart($cart);
+        $this->entityManager->remove($productBalance);
         $this->entityManager->remove($cart);
         $this->entityManager->flush();
     }
