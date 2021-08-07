@@ -87,7 +87,7 @@ class WishListController extends AbstractController
             $this->cartManager->editCart($user, $product);
         }
         $amount = $this->cartManager->getCartTotal($product, $user);
-        $quanity = $this->cartManager->getCartQuantity($product, $user);
-        return $this->json(['cart' => $amount, 'currentAmountInCart' => $quanity]);
+        $quantity = $this->cartManager->getCartQuantity($product, $user);
+        return $this->json(['cart' => $amount, 'currentAmountInCart' => $quantity]);
     }
 }

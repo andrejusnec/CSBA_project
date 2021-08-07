@@ -8,14 +8,15 @@
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
-            {% if app.user %}
-                <div class="mb-3">
-                    You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-                </div>
-            {% endif %}
+        {% if app.user %}
+            <div class="mb-3">
+                You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
+        {% endif %}
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
         <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        <input style="margin-bottom: 10px;" type="email" value="{{ last_username }}" name="email" id="inputEmail"
+               class="form-control" placeholder="Email address" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <div class="checkbox mb-3">
@@ -23,11 +24,10 @@
                 <input type="checkbox" id="remember_me" name="_remember_me"> Remember me
             </label>
         </div>
-            <input type="hidden" name="_csrf_token"
-                   value="{{ csrf_token('authenticate') }}"
-            >
-        <button class="btn btn-lg btn-primary btn-block" type="submit">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        <button class="btn btn-sm btn-primary btn-block" type="submit">
             Sign in
         </button>
+        <a class="btn btn-sm btn-primary btn-block" href="{{ path('app_register') }}">Register</a>
     </form>
 {% endblock %}

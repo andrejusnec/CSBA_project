@@ -14,8 +14,6 @@ use App\Manager\ProductOrderListManager;
 use App\Manager\WishListManager;
 use App\Service\SumHelper;
 use Doctrine\DBAL\ConnectionException;
-use Doctrine\ORM\NonUniqueResultException;
-use PHPUnit\Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

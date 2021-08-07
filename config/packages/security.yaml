@@ -26,6 +26,7 @@ security:
                 path: app_logout
                 target: app_login
             remember_me:
+                name: REMEMBER
                 secret: '%kernel.secret%'
                 lifetime: 604800
                 path: /

@@ -37,10 +37,10 @@ let $cartContainer = $('.cart-item-full');
 let $test = $cartContainer.find('.current-amount').on('change', function (e) {
     e.preventDefault();
     let $linkas = $(e.currentTarget);
-    console.log($linkas.data('counter'))
     return $linkas.data('counter');
 });
-$cartContainer.find('.cart-amount').on('click', function (e, test) {
+
+$cartContainer.find('.cart-amount').on('click', function (e) {
     e.preventDefault();
     let $link = $(e.currentTarget);
     $.ajax({
@@ -51,8 +51,33 @@ $cartContainer.find('.cart-amount').on('click', function (e, test) {
         let price = parseFloat(response.cart);
         price = price.toFixed(2);
         let quantityInStock = $test.data('counter');
-        $('#'+quantityInStock).val(response.currentAmountInCart);
+        let selectorsss = $('#' + quantityInStock);
+        if (selectorsss.val() > response.currentAmountInCart) {
+            $('.btn-plus').attr("disabled", true);
+        } else {
+            $('.btn-plus').attr("disabled", false);
+        }
+        selectorsss.val(response.currentAmountInCart);
         $('#' + cart).text('€' + price);
     })
 
 });
+
+function check($link) {
+    let $xxx = $('.cart-item-full');
+    $xxx.find('.cart-amount').addEventListener('mousedown', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/cart_quantity/' + $link.data('product') + '/' + $link.data('user') + '/' + $link.data('direction'),
+            method: 'POST'
+        }).then(function (response) {
+            let quantityInStock = $test.data('counter');
+            let selectorsss = $('#' + quantityInStock);
+            if (selectorsss.val() > response.currentAmountInCart) {
+                $('.btn-plus').attr("disabled", true);
+            } else {
+                $('.btn-plus').attr("disabled", false);
+            }
+        })
+    })
+}
