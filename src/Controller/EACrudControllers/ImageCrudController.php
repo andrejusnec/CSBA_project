@@ -45,7 +45,7 @@ class ImageCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-            ->add('title', 'Image name')
+            ->add('title')
             ->add('isActive')
             ->add(OnlyProductFilter::new('product'));
     }

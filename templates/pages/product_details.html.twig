@@ -70,18 +70,10 @@
                                         </div>
                                         <div class="sidebar-widget tag sidebar-widget-padding">
                                             <h2 class="title">Tags Cloud</h2>
-                                            <a href="#">Lorem ipsum</a>
-                                            <a href="#">Vivamus</a>
-                                            <a href="#">Phasellus</a>
-                                            <a href="#">pulvinar</a>
-                                            <a href="#">Curabitur</a>
-                                            <a href="#">Fusce</a>
-                                            <a href="#">Sem quis</a>
-                                            <a href="#">Mollis metus</a>
-                                            <a href="#">Sit amet</a>
-                                            <a href="#">Vel posuere</a>
-                                            <a href="#">orci luctus</a>
-                                            <a href="#">Nam lorem</a>
+                                            {% for tag in product.tags %}
+                                            <a href="{{ path('pages/product_show_by_tag', {'tag' : tag.id }) }}"><i class="fas fa-tags"></i> {{ tag }}</a>
+                                            {% endfor %}
+
                                         </div>
                                         <div class="action">
                                             <a class="btn" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a>

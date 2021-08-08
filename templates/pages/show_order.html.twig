@@ -28,7 +28,7 @@
                                          src="{{ asset('uploads/images/') }}{{ item.product.mainImage }}"
                                          alt="{{ item.product.mainImage }}"/></td>
                                 <td>{{ item.product.title }}</td>
-                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.quantity|number_format(2, '.', ',') }}</td>
                                 <td>{{ item.price | format_currency('EUR') }}</td>
                                 <td>{{ item.total | format_currency('EUR') }}</td>
                             </tr>

@@ -67,7 +67,7 @@ class CartManager
         } else {
             $productEntity = $this->productManager->findOne($product);
             $amountInStock = $this->productManager->getProductAmountInStock($productEntity);
-            if ($amountInStock > $cart->getQuantity()) {
+            if ($amountInStock > 0) {
                 $amount = $cart->getQuantity() + 1;
                 $cart->setQuantity($amount);
                 $cart->setTotal($cart->getPrice() * $amount);

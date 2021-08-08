@@ -81,3 +81,24 @@ function check($link) {
         })
     })
 }
+
+// let $kintamasis = $('#myUL');
+// $kintamasis.find('.test').on('click', function (e) {
+//     e.preventDefault();
+//     let $linkas = $(e.currentTarget);
+//         $.ajax({
+//             url: '/test/' + $linkas.data('test'),
+//             method: 'POST',
+//         }).then(function (response) {
+//             console.log(response)
+//         })
+//     })
+// function myFunction(data)
+// {
+//     let result = "";
+//     for (var i = 0; i < data.length; i++)
+//     {
+//         result += 'NAME: ' + data[i].name + ', AGE: ' + data[i].age + '<br/>';
+//     }
+//     $('#info').html(result)
+

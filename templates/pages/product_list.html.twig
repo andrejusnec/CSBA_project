@@ -10,20 +10,17 @@
                 {% block menu %} {{ include('static/menu.html.twig') }} {% endblock %}
 
 
-                <div class="sidebar-widget tag">
+                <div class="sidebar-widget tag" style="margin:40px 0px; padding-top:30px">
                     <h2 class="title">Tags Cloud</h2>
-                    <a href="#">Lorem ipsum</a>
-                    <a href="#">Vivamus</a>
-                    <a href="#">Phasellus</a>
-                    <a href="#">pulvinar</a>
-                    <a href="#">Curabitur</a>
-                    <a href="#">Fusce</a>
-                    <a href="#">Sem quis</a>
-                    <a href="#">Mollis metus</a>
-                    <a href="#">Sit amet</a>
-                    <a href="#">Vel posuere</a>
-                    <a href="#">orci luctus</a>
-                    <a href="#">Nam lorem</a>
+                    {% if tags is defined %}
+                        {% for tag in tags %}
+                            <a href="{{ path('pages/product_show_by_tag', {'tag' : tag.id }) }}"><i class="fas fa-tags"></i> {{ tag }}</a>
+                        {% endfor %}
+                    {% elseif tagsOfSelectedProducts is defined %}
+                        {% for tag in tagsOfSelectedProducts %}
+                            <a href="{{ path('pages/product_show_by_tag', {'tag' : tag.id }) }}"><i class="fas fa-tags"></i> {{ tag }}</a>
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
             <!-- Side Bar End -->

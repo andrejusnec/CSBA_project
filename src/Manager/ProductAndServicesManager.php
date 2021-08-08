@@ -86,4 +86,21 @@ class ProductAndServicesManager
         return $this->productBalanceManager->productAmountInStock($product);
     }
 
+    public function getTagsFromListOfProducts(array $listOfProducts): array
+    {
+        $tags = array();
+        foreach ($listOfProducts as $value) {
+            $arr = $value->getTags();
+            foreach ($arr as $val) {
+                $tags[] = $val;
+            }
+        }
+        return array_unique($tags);
+    }
+
+    public function getTenRandomProducts(): array
+    {
+        return $this->repository->findTenProducts();
+    }
+
 }
