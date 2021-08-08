@@ -9,6 +9,7 @@ use App\Form\Type\CollectionComplexType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
@@ -19,6 +20,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 
 class ProductSupplyCrudController extends AbstractCrudController
 {
@@ -46,7 +48,7 @@ class ProductSupplyCrudController extends AbstractCrudController
             FormField::addPanel('Product Supply Items'),
             CollectionField::new('productSupplyLists', 'Product Supply Lists')
                 ->setFormTypeOptions([
-                    'entry_type' =>ProductSupplyListType::class,
+                    'entry_type' => ProductSupplyListType::class,
                     'by_reference' => false,
                     'allow_add' => true,
                     'attr' => ['class' => 'form-group']])
@@ -63,8 +65,14 @@ class ProductSupplyCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, $createProductBalance);
     }
 
-    public function createProductBalance(AdminContext $context) {
-        $productBalance = $context->getEntity()->getInstance();
-        dd($productBalance);
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('order_number')
+            ->add('date')
+            ->add('isActive')
+            ->add('status')
+            ->add(EntityFilter::new('productSupplyLists'));
     }
+
 }

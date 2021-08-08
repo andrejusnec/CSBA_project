@@ -6,6 +6,7 @@ use App\Entity\ProductSupplyList;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Menu\SectionMenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -36,10 +37,21 @@ class ProductSupplyListCrudController extends AbstractCrudController
 
         ];
     }
+
     public function configureActions(Actions $actions): Actions
     {
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->reorder(Crud::PAGE_INDEX, [Action::DETAIL, Action::DELETE, Action::EDIT]);
     }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('quantity')
+            ->add('product')
+            ->add('product_supply');
+    }
+
+
 }

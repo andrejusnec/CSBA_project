@@ -2,16 +2,17 @@
 
 namespace App\Controller\EACrudControllers;
 
-use App\Entity\Cart;
+use App\Entity\WishList;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 
-class CartCrudController extends AbstractCrudController
+class WishListCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Cart::class;
+        return WishList::class;
     }
 
     public function configureFields(string $pageName): iterable
@@ -23,10 +24,14 @@ class CartCrudController extends AbstractCrudController
                     ->andWhere('entity.isActive = :val')
                     ->andWhere('entity.isProduct = :val')
                     ->setParameter('val', true);
-            }),
-            NumberField::new('Price'),
-            NumberField::new('Quantity'),
-            NumberField::new('Total'),
+            })
         ];
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('user')
+            ->add('product');
     }
 }

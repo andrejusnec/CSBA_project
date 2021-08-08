@@ -78,6 +78,6 @@ class ProductSupplyList
     }
     public function __toString(): string
     {
-       return $this->product;
+       return $this->id;
     }
 }

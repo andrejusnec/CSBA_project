@@ -74,8 +74,8 @@ class CartManager
                 $productBalance = $this->productBalanceManager->editProductBalanceFromCart($cart);
             }
         }
-        if(isset($productBalance)) {
-            $this->entityManager->persist( $productBalance );
+        if (isset($productBalance)) {
+            $this->entityManager->persist($productBalance);
         }
 
         $this->entityManager->persist($cart);
@@ -115,6 +115,10 @@ class CartManager
         if ($amount > 1) {
             $cart->setTotal($cart->getTotal() - $cart->getPrice());
             $cart->setQuantity($cart->getQuantity() - 1);
+            $productBalance = $this->productBalanceManager->getProductBalanceByCart($cart);
+            $productBalance->setQuantity($productBalance->getQuantity() + 1);
+            $productBalance->setReserved($productBalance->getReserved() - 1);
+            $this->entityManager->persist($productBalance);
             $this->entityManager->persist($cart);
             $this->entityManager->flush();
         }

@@ -15,6 +15,7 @@ use App\Entity\ProductsAndServices;
 use App\Entity\ProductSupply;
 use App\Entity\ProductSupplyList;
 use App\Entity\User;
+use App\Entity\WishList;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -45,13 +46,14 @@ class DashboardController extends AbstractDashboardController
         return [
             MenuItem::subMenu('List', 'fa fa-list')->setSubItems([
                 MenuItem::linkToCrud('Users', 'fas fa-user', User::class),
-                MenuItem::linkToCrud('Products And Services', 'fas fa-product-hunt', ProductsAndServices::class),
+                MenuItem::linkToCrud('Products And Services', 'fas fa-shopping-bag', ProductsAndServices::class),
                 MenuItem::linkToCrud('Measures', 'fas fa-weight', Measure::class),
                 MenuItem::linkToCrud('Images', 'fas fa-image', Image::class),
                 MenuItem::linkToCrud('Product Balance', 'fas fa-balance-scale', ProductBalance::class),
                 MenuItem::linkToCrud('Prices', 'fas fa-dollar-sign', Price::class),
                 MenuItem::linkToCrud('Country', 'fas fa-flag', Country::class),
-                MenuItem::linkToCrud('Cart', 'fas fa-file-invoice', Cart::class),
+                MenuItem::linkToCrud('Cart', 'fas fa-shopping-cart', Cart::class),
+                MenuItem::linkToCrud('Wishlist', 'fas fa-heart', WishList::class),
                 MenuItem::section('Orders'),
                 MenuItem::linkToCrud('Order', 'fas fa-file-invoice', Order::class),
                 MenuItem::linkToCrud('Product Order List', 'fas fa-archive', ProductOrderList::class),

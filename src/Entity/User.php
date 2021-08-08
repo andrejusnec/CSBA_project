@@ -218,6 +218,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getFullName(): string
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
     /**
      * @return Collection|WishList[]
      */
@@ -251,4 +256,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->email;
     }
+
 }
