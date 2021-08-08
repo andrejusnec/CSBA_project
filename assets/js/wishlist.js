@@ -1,33 +1,32 @@
-
 let $container = $('.add-to-wishlist');
-$container.find('.wishListAdd').on('click', function(e) {
+$container.find('.wishListAdd').on('click', function (e) {
     e.preventDefault();
     let $link = $(e.currentTarget);
     $.ajax({
-        url:'/wishlists/'+$link.data('add')+'/'+$link.data('user'),
+        url: '/wishlists/' + $link.data('add') + '/' + $link.data('user'),
         method: 'POST',
     })
 });
 
 let $counter = $('body');
 let $cont = $('.add-to-cart');
-$cont.find('.addToCart').on('click', function(e) {
+$cont.find('.addToCart').on('click', function (e) {
     e.preventDefault();
     let $link = $(e.currentTarget);
 
-    if($link.data('secret')) {
+    if ($link.data('secret')) {
         let fromWishList = $link.data('secret');
         $.ajax({
-            url: '/cart_add/' + $link.data('product') + '/' + $link.data('user')+'/'+fromWishList,
+            url: '/cart_add/' + $link.data('product') + '/' + $link.data('user') + '/' + fromWishList,
             method: 'POST',
-        }).then(function (response){
+        }).then(function (response) {
             $counter.find('.cart_count_total').text(response.cart_count);
         })
     } else {
         $.ajax({
             url: '/cart_add/' + $link.data('product') + '/' + $link.data('user'),
             method: 'POST',
-        }).then(function (response){
+        }).then(function (response) {
             $counter.find('.cart_count_total').text(response.cart_count);
         })
     }
@@ -35,17 +34,50 @@ $cont.find('.addToCart').on('click', function(e) {
 
 
 let $cartContainer = $('.cart-item-full');
-$cartContainer.find('.cart-amount').on('click', function(e) {
+let $test = $cartContainer.find('.current-amount').on('change', function (e) {
+    e.preventDefault();
+    let $linkas = $(e.currentTarget);
+    return $linkas.data('counter');
+});
+
+$cartContainer.find('.cart-amount').on('click', function (e) {
     e.preventDefault();
     let $link = $(e.currentTarget);
-        $.ajax({
-            url: '/cart_quantity/' + $link.data('product') + '/' + $link.data('user')+'/'+$link.data('direction'),
-            method: 'POST'
-        }).then(function (response){
-            let cart = $link.data('cart');
-            let price = parseFloat(response.cart);
-            price = price.toFixed(2);
-            $('#'+cart).text('€'+price);
-        })
+    $.ajax({
+        url: '/cart_quantity/' + $link.data('product') + '/' + $link.data('user') + '/' + $link.data('direction'),
+        method: 'POST'
+    }).then(function (response) {
+        let cart = $link.data('cart'); //getting data-cart value
+        let price = parseFloat(response.cart);
+        price = price.toFixed(2);
+        let quantityInStock = $test.data('counter');
+        let selectorsss = $('#' + quantityInStock);
+        if (selectorsss.val() > response.currentAmountInCart) {
+            $('.btn-plus').attr("disabled", true);
+        } else {
+            $('.btn-plus').attr("disabled", false);
+        }
+        selectorsss.val(response.currentAmountInCart);
+        $('#' + cart).text('€' + price);
+    })
 
 });
+
+function check($link) {
+    let $xxx = $('.cart-item-full');
+    $xxx.find('.cart-amount').addEventListener('mousedown', function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: '/cart_quantity/' + $link.data('product') + '/' + $link.data('user') + '/' + $link.data('direction'),
+            method: 'POST'
+        }).then(function (response) {
+            let quantityInStock = $test.data('counter');
+            let selectorsss = $('#' + quantityInStock);
+            if (selectorsss.val() > response.currentAmountInCart) {
+                $('.btn-plus').attr("disabled", true);
+            } else {
+                $('.btn-plus').attr("disabled", false);
+            }
+        })
+    })
+}

@@ -41,17 +41,25 @@
                                     <th>Action</th>
                                 </tr>
                                 </thead>
-                                {% if orders is defined and orders is not null %}
                                 <tbody>
+                                {% if orders is defined and orders is not null %}
                                 {% for order in orders |sort((a, b) => b.date <=> a.date) %}
                                 <tr>
                                     <td>{{order.orderNumber}}</td>
                                     <td>{{ order.date |format_datetime() }}</td>
                                     <td>{{ order.orderTotal | format_currency('EUR') }}</td>
-                                    <td>Approved</td>
+                                    <td>{{ order.status is same as true ? 'Approved' : 'Pending' }}</td>
                                     <td><a href="{{ path('pages/show_order', {'id' : order.id}) }}"><button class="btn">View</button></a></td>
                                 </tr>
                                 {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
                                 {% endif %}
                                 </tbody>
                             </table>

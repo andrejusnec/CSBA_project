@@ -33,7 +33,7 @@ class WishList
 
     public function __construct()
     {
-        $this->user = new ArrayCollection();
+        //$this->user = new ArrayCollection();
     }
 
     public function getId(): ?int

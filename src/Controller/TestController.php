@@ -13,7 +13,7 @@ use App\Manager\ProductAndServicesManager;
 use App\Manager\ProductOrderListManager;
 use App\Manager\WishListManager;
 use App\Service\SumHelper;
-use PHPUnit\Exception;
+use Doctrine\DBAL\ConnectionException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,9 +40,10 @@ class TestController extends AbstractController
     {
         $this->productManager = $productManager;
         $this->security = $security;
+        $this->priceManager = $priceManager;
         $this->wishListManager = $wishListManager;
         $this->cartManager = $cartManager;
-        $this->priceManager = $priceManager;
+
     }
 
     /**
@@ -73,22 +74,10 @@ class TestController extends AbstractController
         return $this->render('pages/product_details.html.twig', ['product' => $product, 'pm' => $this->priceManager]);
     }
 
-    /**
-     * @Route("cart", name="pages/cart", methods={"GET"})
-     */
-    public function cart(): Response
-    {
-        $cart = null;
-        $currentUser = $this->security->getUser();
-        if ($currentUser !== null) {
-            $cart = $this->cartManager->getAllUserCartItems($currentUser->getId());
-        }
-        return $this->render('pages/cart.html.twig', ['cart' => $cart, 'pm' => $this->priceManager]);
-    }
 
     /**
      * @Route("checkout", name="pages/checkout")
-     * @throws \Doctrine\DBAL\ConnectionException
+     * @throws ConnectionException
      */
     public function checkout(CountryManager $country, Request $request, OrderManager $om): Response
     {
@@ -118,15 +107,6 @@ class TestController extends AbstractController
     }
 
     /**
-     * @Route("login", name="pages/login", methods={"GET"})
-     */
-    public function login(): Response
-    {
-        return $this->render('pages/login.html.twig');
-
-    }
-
-    /**
      * @Route("my_account", name="pages/my_account", methods={"GET"})
      */
     public function my_account(OrderManager $om, SumHelper $sumHelper): Response
@@ -148,7 +128,8 @@ class TestController extends AbstractController
         $allCategories = $this->productManager->hierarchy();
         return $this->render('pages/product_list.html.twig', ['allCategories' => $allCategories,
             'allProducts' => $allProducts,
-            'pm' => $this->priceManager]);
+            'pm' => $this->priceManager,
+            'productManager' => $this->productManager]);
     }
 
     /**
@@ -164,22 +145,10 @@ class TestController extends AbstractController
             ['allCategories' => $allCategories,
                 'selectedProducts' => $selectedProducts,
                 'product_id' => $slug,
+                'productManager' => $this->productManager,
                 'pm' => $this->priceManager]);
     }
 
-    /**
-     * @Route("wishlist", name="pages/wishlist", methods={"GET"})
-     */
-    public function wishlist(): Response
-    {
-        $wishLists = null;
-        $currentUser = $this->security->getUser();
-        if ($currentUser !== null) {
-            $wishLists = $this->wishListManager->getAllUserWishLists($currentUser->getId());
-        }
-
-        return $this->render('pages/wishlist.html.twig', ['wishList' => $wishLists, 'pm' => $this->priceManager]);
-    }
 
     /**
      * @Route("show_order/{id}", name="pages/show_order")
@@ -188,7 +157,7 @@ class TestController extends AbstractController
     {
         $productOrderLists = $pm->getAll($id);
         $order = $om->getOrder($id);
-        return $this->render('pages/show_order.html.twig', ['productOrderLists' => $productOrderLists ?? null, 'order'=> $order ?? null]);
+        return $this->render('pages/show_order.html.twig', ['productOrderLists' => $productOrderLists ?? null, 'order' => $order ?? null]);
     }
 
 }

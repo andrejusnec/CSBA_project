@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ProductSupplyListRepository::class)
+ * @ORM\EntityListeners({"App\EventListener\ProductSupplyListEditListener"})
  */
 class ProductSupplyList
 {
@@ -77,6 +78,6 @@ class ProductSupplyList
     }
     public function __toString(): string
     {
-       return $this->product;
+       return $this->id;
     }
 }

@@ -45,13 +45,19 @@
                                     <div class="qty">
                                         <button class="btn-minus cart-amount" data-cart="{{ item.id }}" data-product="{{ item.product.id }}" data-user="{{ app.user.id }}" data-direction="minus">
                                             <i class="fa fa-minus"></i></button>
-                                        <input readonly class="test-amount" type="text" value="{{ item.quantity }}">
+                                        {% set uniqId = "%sABC"|format(item.id) %}
+                                        <input readonly data-counter="{{uniqId}}" id="{{uniqId}}" class="current-amount" type="text" value="{{ item.quantity }}">
                                         <button class="btn-plus cart-amount" data-cart="{{ item.id }}" data-product="{{ item.product.id }}" data-user="{{ app.user.id }}" data-direction="plus">
                                             <i class="fa fa-plus"></i></button>
                                     </div>
                                 </td>
                                 <td><span id="{{ item.id }}">{{ item.total|format_currency('EUR') }}</span></td>
-                                <td><button><a href="{{ path('cart_remove', {'product' : item.product.id}) }}"><i class="fa fa-trash"></i></a></button></td>
+                                <td>
+                                    <form action="{{ path('cart_remove', {product : item.product.id}) }}" method="post">
+                                        <button name="foo" value="{{ item.product.id }}"><i class="fa fa-trash"></i></button>
+                                    </form>
+                                </td>
+{#                                <button><a href="{{ path('cart_remove', {'product' : item.product.id}) }}"><i class="fa fa-trash"></i></a></button>#}
                             </tr>
                             {% endfor %}
 

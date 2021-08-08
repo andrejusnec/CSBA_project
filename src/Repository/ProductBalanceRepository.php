@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\ProductBalance;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -22,19 +24,21 @@ class ProductBalanceRepository extends ServiceEntityRepository
     // /**
     //  * @return ProductBalance[] Returns an array of ProductBalance objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    /**
+     * @throws NoResultException|NonUniqueResultException
+     */
+    public function countProductBalance($product)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('pb')
+            ->andWhere('pb.product = :val')
+            ->setParameter('val', $product)
+            ->select('SUM(pb.quantity) as productsInStock')
             ->getQuery()
-            ->getResult()
+            ->getSingleScalarResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?ProductBalance

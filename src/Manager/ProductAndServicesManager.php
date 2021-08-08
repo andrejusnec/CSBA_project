@@ -6,18 +6,22 @@ namespace App\Manager;
 
 use App\Entity\ProductsAndServices;
 use App\Repository\ProductsAndServicesRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 class ProductAndServicesManager
 {
     private ProductsAndServicesRepository $repository;
+    private ProductBalanceManager $productBalanceManager;
 
     /**
      * ProductAndServicesManager constructor.
      * @param ProductsAndServicesRepository $repository
      */
-    public function __construct(ProductsAndServicesRepository $repository)
+    public function __construct(ProductsAndServicesRepository $repository, ProductBalanceManager $productBalanceManager)
     {
         $this->repository = $repository;
+        $this->productBalanceManager = $productBalanceManager;
     }
 
     public function getParentCatalogs(): array
@@ -40,7 +44,7 @@ class ProductAndServicesManager
         $sortedArr = [];
         for ($i = 0; $i < count($data); $i++) {
             $sortedArr[] = array('category' => $data[$i],
-                'children' => (new ProductAndServicesManager($this->repository))->hierarchy($data[$i]->getId()
+                'children' => (new ProductAndServicesManager($this->repository, $this->productBalanceManager))->hierarchy($data[$i]->getId()
                 ));
         }
         return $sortedArr;
@@ -51,7 +55,7 @@ class ProductAndServicesManager
         return $this->repository->findBy(['isProduct' => true, 'isActive' => true, 'parent' => $id]);
     }
 
-    public function getAllCategoryProducts($id, &$array) : void
+    public function getAllCategoryProducts($id, &$array): void
     {
         $data = $this->repository->findBy(['isActive' => true, 'parent' => $id]);
         foreach ($data as $value) {
@@ -73,4 +77,13 @@ class ProductAndServicesManager
     {
         return $this->repository->find($id);
     }
+
+    /**
+     * @throws NoResultException|NonUniqueResultException
+     */
+    public function getProductAmountInStock(ProductsAndServices $product): mixed
+    {
+        return $this->productBalanceManager->productAmountInStock($product);
+    }
+
 }

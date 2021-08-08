@@ -29,9 +29,11 @@
                 <div class="navbar-nav mr-auto">
                     <a href="{{ path('home') }}" class="nav-item nav-link {{app.request.attributes.get('_route') == 'home' ? 'active' : ' '}}">Home</a>
                     <a href="{{ path('pages/product_list') }}" class="nav-item nav-link">Products</a>
+                    {% if app.user %}
                     <a href="{{ path('pages/cart') }}" class="nav-item nav-link">Cart</a>
                     <a href="{{ path('pages/checkout') }}" class="nav-item nav-link">Checkout</a>
                     <a href="{{ path('pages/my_account') }}" class="nav-item nav-link">My Account</a>
+                    {% endif %}
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More Pages</a>
                         <div class="dropdown-menu">
@@ -46,6 +48,7 @@
                 <div class="navbar-nav ml-auto">
                     {% if app.user %}
                         <a href="{{ path('pages/my_account')}}" class="nav-link">{{ app.user.email }}</a>
+                        <a href="{{ path('app_logout')}}" class="nav-link"><i class="fas fa-sign-out-alt"></i></a>
                     {% else %}
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Account</a>
