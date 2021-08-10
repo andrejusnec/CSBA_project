@@ -21,6 +21,7 @@ $cont.find('.addToCart').on('click', function (e) {
             method: 'POST',
         }).then(function (response) {
             $counter.find('.cart_count_total').text(response.cart_count);
+            location.reload();
         })
     } else {
         $.ajax({

@@ -4,6 +4,7 @@ namespace App\Manager;
 
 use App\Entity\Tag;
 use App\Repository\TagRepository;
+use Doctrine\ORM\QueryBuilder;
 
 class TagManager
 {
@@ -18,6 +19,7 @@ class TagManager
     {
         return $this->repository->findAll();
     }
+
     public function getTag($tag_id): ?Tag
     {
         return $this->repository->find($tag_id);

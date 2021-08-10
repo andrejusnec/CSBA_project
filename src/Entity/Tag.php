@@ -52,7 +52,7 @@ class Tag
     }
 
     /**
-     * @return Collection|ProductsAndServices[]
+     * @return Collection
      */
     public function getProductsAndServices(): Collection
     {

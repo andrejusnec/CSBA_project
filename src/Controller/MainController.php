@@ -27,7 +27,7 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/home", name="home", methods={"GET"})
+     * @Route("/", name="home", methods={"GET"})
      */
     public function main(): Response
     {

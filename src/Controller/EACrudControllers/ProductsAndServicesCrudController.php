@@ -29,7 +29,9 @@ class ProductsAndServicesCrudController extends AbstractCrudController
             BooleanField::new('isActive'),
             BooleanField::new('isCatalog'),
             AssociationField::new('measure_code')->onlyOnForms(),
-            AssociationField::new('parent'),
+            AssociationField::new('parent')->setQueryBuilder(function ($queryBuilder) {
+                return $queryBuilder->andWhere('entity.isCatalog = :val')->setParameter('val', true);
+            }),
             TextField::new('fontawesome_icon')->onlyOnForms(),
             AssociationField::new('main_image')->onlyOnForms()->onlyOnForms()->setQueryBuilder(function ($queryBuilder) {
                 return $queryBuilder->andWhere('entity.isActive = :val')->setParameter('val', true);

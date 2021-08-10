@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ProductsAndServices;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -33,17 +34,17 @@ class ProductsAndServicesRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return int|mixed|string
+     * @return QueryBuilder
      */
-    public function findOnlyActiveProducts(): mixed
+    public function findOnlyActiveProductsPagination(): QueryBuilder
     {
-        return $this->createQueryBuilder('prod')
+        $qb = $this->createQueryBuilder('prod')
             ->andWhere('prod.isProduct = :val')
             ->andWhere('prod.isActive = :val')
-            ->setParameter('val', true)
-            ->getQuery()
-            ->getResult();
+            ->setParameter('val', true);
+        return $qb;
     }
+
 
 
     public function findTenProducts(): array
@@ -55,6 +56,33 @@ class ProductsAndServicesRepository extends ServiceEntityRepository
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
+    }
+
+    public function getTagProductsQuery($tag): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('prod')
+            ->andWhere(':val MEMBER OF prod.tags')
+            ->setParameter('val', $tag->getId());
+        return $qb;
+    }
+
+    /**
+     * @param $term
+     * @return QueryBuilder
+     */
+    public function findAllProductsWithSearchQueryBuilder($term): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('p')
+        ->innerJoin('p.tags',  't')
+        ->addSelect('t');
+
+        if($term) {
+            $qb->andWhere('p.title LIKE :term OR t.name LIKE :term')
+                ->setParameter('term', '%'.$term.'%')
+                ->andWhere('p.isActive = :val AND p.isProduct = :val')
+                ->setParameter('val', true);
+        }
+        return $qb;
     }
 
 

@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CartRepository::class)
+// * @ORM\EntityListeners({"App\EventListener\CartRemoveListener"})
  */
 class Cart
 {
@@ -107,5 +108,8 @@ class Cart
         $this->quantity = $quantity;
 
         return $this;
+    }
+    public function __toString() {
+        return $this->id;
     }
 }

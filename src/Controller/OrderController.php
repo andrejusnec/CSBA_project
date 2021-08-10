@@ -57,8 +57,11 @@ class OrderController extends AbstractController
      */
     public function showOrderItem($id, ProductOrderListManager $pm, OrderManager $om): Response
     {
-        $productOrderLists = $pm->getAll($id);
-        $order = $om->getOrder($id);
+        $currentUser = $this->security->getUser();
+        if($om->getOrder($id) === $currentUser) {
+            $productOrderLists = $pm->getAll($id);
+            $order = $om->getOrder($id);
+        }
         return $this->render('pages/show_order.html.twig', ['productOrderLists' => $productOrderLists ?? null, 'order' => $order ?? null]);
     }
 }

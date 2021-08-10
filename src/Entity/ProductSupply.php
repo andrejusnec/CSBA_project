@@ -48,6 +48,7 @@ class ProductSupply
 
     public function __construct()
     {
+        $this->order_number = $this->id . mt_rand(1, 100000);
         $this->productSupplyLists = new ArrayCollection();
         $this->date = new \DateTime('Europe/Vilnius');
     }

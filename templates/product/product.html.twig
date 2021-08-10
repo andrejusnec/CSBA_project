@@ -1,14 +1,14 @@
 {% block productList %}
 
-    {% if selectedProducts is defined %}
-        {% set data = selectedProducts %}
-    {% elseif products is defined %}
-        {% set data = products %}
-    {% else %}
-        {% set data = allProducts %}
-    {% endif %}
-    {% if data %}
-        {% for value in data %}
+{#    {% if selectedProducts is defined %}#}
+{#            {% set data = selectedProducts %}#}
+{#        {% elseif products is defined %}#}
+{#                {% set data = products %}#}
+{#            {% else %}#}
+{#                    {% set data = allProducts %}#}
+{#    {% endif %}#}
+{#    {% if data %}#}
+        {% for value in pagination %}
             <div class="col-md-4">
                 <div class="product-item">
                     <div class="product-title">
@@ -50,6 +50,13 @@
                     </div>
                 </div>
             </div>
+            {#     POSSIBLE TO REMOVE ELSE       #}
+            {% else %}
+{#            <tr>#}
+{#                <td colspan="4" class="text-center">#}
+{#                    No comments found#}
+{#                </td>#}
+{#            </tr>#}
         {% endfor %}
-    {% endif %}
+{#    {% endif %}#}
 {% endblock %}
