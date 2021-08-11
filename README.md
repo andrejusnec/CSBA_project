@@ -4,7 +4,7 @@
 ![Structure Type](https://img.shields.io/badge/Love-Symfony-red)
 ![Sponsor](https://img.shields.io/badge/Sponsor-BA-orange)
 
-
+## About
 Educational e-commerce project "Eshop"
 
 This project is for educational porpuses only. Pull request are welcome. Thank you for your cooperation!
