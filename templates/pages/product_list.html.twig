@@ -1,7 +1,6 @@
 {% extends "base.html.twig" %}
 {% block body %}
     {% block breadCrumb %} {{ include('static/breadcrumb.html.twig') }} {% endblock %}
-
     <!-- Product List Start -->
     <div class="product-view">
     <div class="container-fluid">
@@ -11,89 +10,89 @@
                 {% block menu %} {{ include('static/menu.html.twig') }} {% endblock %}
 
 
-                <div class="sidebar-widget tag">
+                <div class="sidebar-widget tag" style="margin:40px 0px; padding-top:30px">
                     <h2 class="title">Tags Cloud</h2>
-                    <a href="#">Lorem ipsum</a>
-                    <a href="#">Vivamus</a>
-                    <a href="#">Phasellus</a>
-                    <a href="#">pulvinar</a>
-                    <a href="#">Curabitur</a>
-                    <a href="#">Fusce</a>
-                    <a href="#">Sem quis</a>
-                    <a href="#">Mollis metus</a>
-                    <a href="#">Sit amet</a>
-                    <a href="#">Vel posuere</a>
-                    <a href="#">orci luctus</a>
-                    <a href="#">Nam lorem</a>
+                    {% if tags is defined %}
+                        {% for tag in tags %}
+                            <a href="{{ path('pages/product_show_by_tag', {'tag' : tag.id }) }}"><i class="fas fa-tags"></i> {{ tag }}</a>
+                        {% endfor %}
+                    {% elseif tagsOfSelectedProducts is defined %}
+                        {% for tag in tagsOfSelectedProducts %}
+                            <a href="{{ path('pages/product_show_by_tag', {'tag' : tag.id }) }}"><i class="fas fa-tags"></i> {{ tag }}</a>
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
             <!-- Side Bar End -->
             <div class="col-lg-8">
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="product-view-top">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="product-search">
-                                        <input type="email" value="Search">
-                                        <button><i class="fa fa-search"></i></button>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="product-short">
-                                        <div class="dropdown">
-                                            <div class="dropdown-toggle" data-toggle="dropdown">Product short by
-                                            </div>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a href="#" class="dropdown-item">Newest</a>
-                                                <a href="#" class="dropdown-item">Popular</a>
-                                                <a href="#" class="dropdown-item">Most sale</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="product-price-range">
-                                        <div class="dropdown">
-                                            <div class="dropdown-toggle" data-toggle="dropdown">Product price
-                                                range
-                                            </div>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a href="#" class="dropdown-item">$0 to $50</a>
-                                                <a href="#" class="dropdown-item">$51 to $100</a>
-                                                <a href="#" class="dropdown-item">$101 to $150</a>
-                                                <a href="#" class="dropdown-item">$151 to $200</a>
-                                                <a href="#" class="dropdown-item">$201 to $250</a>
-                                                <a href="#" class="dropdown-item">$251 to $300</a>
-                                                <a href="#" class="dropdown-item">$301 to $350</a>
-                                                <a href="#" class="dropdown-item">$351 to $400</a>
-                                                <a href="#" class="dropdown-item">$401 to $450</a>
-                                                <a href="#" class="dropdown-item">$451 to $500</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+{#                    <div class="col-md-12">#}
+{#                        <div class="product-view-top">#}
+{#                            <div class="row">#}
+{#                                <div class="col-md-4">#}
+{#                                    <div class="product-search">#}
+{#                                        <input type="email" value="Search">#}
+{#                                        <button><i class="fa fa-search"></i></button>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="col-md-4">#}
+{#                                    <div class="product-short">#}
+{#                                        <div class="dropdown">#}
+{#                                            <div class="dropdown-toggle" data-toggle="dropdown">Product short by#}
+{#                                            </div>#}
+{#                                            <div class="dropdown-menu dropdown-menu-right">#}
+{#                                                <a href="#" class="dropdown-item">Newest</a>#}
+{#                                                <a href="#" class="dropdown-item">Popular</a>#}
+{#                                                <a href="#" class="dropdown-item">Most sale</a>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="col-md-4">#}
+{#                                    <div class="product-price-range">#}
+{#                                        <div class="dropdown">#}
+{#                                            <div class="dropdown-toggle" data-toggle="dropdown">Product price#}
+{#                                                range#}
+{#                                            </div>#}
+{#                                            <div class="dropdown-menu dropdown-menu-right">#}
+{#                                                <a href="#" class="dropdown-item">$0 to $50</a>#}
+{#                                                <a href="#" class="dropdown-item">$51 to $100</a>#}
+{#                                                <a href="#" class="dropdown-item">$101 to $150</a>#}
+{#                                                <a href="#" class="dropdown-item">$151 to $200</a>#}
+{#                                                <a href="#" class="dropdown-item">$201 to $250</a>#}
+{#                                                <a href="#" class="dropdown-item">$251 to $300</a>#}
+{#                                                <a href="#" class="dropdown-item">$301 to $350</a>#}
+{#                                                <a href="#" class="dropdown-item">$351 to $400</a>#}
+{#                                                <a href="#" class="dropdown-item">$401 to $450</a>#}
+{#                                                <a href="#" class="dropdown-item">$451 to $500</a>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
                     {% block productList %} {{ include('product/product.html.twig') }} {% endblock %}
                     <!-- Pagination Start -->
-                    <div class="col-md-12">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
-                        </nav>
+{#                    <div class="col-md-12">#}
+{#                        <nav aria-label="Page navigation example">#}
+{#                            <ul class="pagination justify-content-center">#}
+{#                                <li class="page-item disabled">#}
+{#                                    <a class="page-link" href="#" tabindex="-1">Previous</a>#}
+{#                                </li>#}
+{#                                <li class="page-item active"><a class="page-link" href="#">1</a></li>#}
+{#                                <li class="page-item"><a class="page-link" href="#">2</a></li>#}
+{#                                <li class="page-item"><a class="page-link" href="#">3</a></li>#}
+{#                                <li class="page-item">#}
+{#                                    <a class="page-link" href="#">Next</a>#}
+{#                                </li>#}
+{#                            </ul>#}
+{#                        </nav>#}
+{#                    </div>#}
+                    <div class="navigation col-md-12" style="margin:auto">
+                        {{ knp_pagination_render(pagination) }}
                     </div>
-                    <!-- Pagination Start -->
+                    <!-- Pagination End -->
                 </div>
 
             </div>

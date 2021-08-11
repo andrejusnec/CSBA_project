@@ -746,10 +746,17 @@ h2 {
     background: #ffffff;
     transition: .3s;
 }
-
+@media(max-width:767px ) {
+    product-item .product-image img {
+        width: 100%;
+        transition: all .3s;
+        height: 100%;
+    }
+}
 .product-item .product-image img {
     width: 100%;
     transition: all .3s;
+    height: 200px;
 }
 
 .product-item:hover .product-image img {
@@ -2401,5 +2408,24 @@ h2 {
     .footer-bottom .copyright,
     .footer-bottom .template-by {
         text-align: center;
+    }
+}
+@media (max-width: 1140px) {
+    .col-lg-8 {
+        position: relative;
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        flex: none;
+        max-width: 100%;
+    }
+    .col-lg-4 {
+        position: relative;
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        flex: none;
+        max-width: 50%;
+        margin: auto;
     }
 }

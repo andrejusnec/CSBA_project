@@ -6,10 +6,11 @@
         function toggleNavbarMethod() {
             if ($(window).width() > 768) {
                 $('.navbar .dropdown').on('click', function () {
-                    $('.dropdown-toggle', this).trigger('click');
-                }).on('click', function () {
-                    $('.dropdown-toggle', this).trigger('click').blur();
-                });
+                    $('.dropdown-toggle', this).triggerHandler('click');
+                })
+                //     .on('click', function () {
+                //     $('.dropdown-toggle', this).trigger('click').blur();
+                // });
             } else {
                 $('.navbar .dropdown').off('mouseover').off('mouseout');
             }
@@ -208,10 +209,10 @@
         if ($button.hasClass('btn-plus')) {
              newVal = parseFloat(oldValue) + 1;
         } else {
-            if (oldValue > 0) {
+            if (oldValue > 1) {
                 newVal = parseFloat(oldValue) - 1;
             } else {
-                newVal = 0;
+                newVal = 1;
             }
         }
         $button.parent().find('input').val(newVal);

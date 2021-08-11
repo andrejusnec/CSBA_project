@@ -3,6 +3,7 @@
 namespace App\Controller\EACrudControllers;
 
 use App\Entity\Country;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
@@ -19,9 +20,16 @@ class CountryCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('title')->onlyOnIndex(),
+            TextField::new('title')->onlyOnIndex()->setLabel('Country'),
             CountryField::new('title')->onlyOnForms(),
-            BooleanField::new('isActive'),
+            BooleanField::new('isActive')->setLabel('Active')
         ];
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('title')
+            ->add('isActive');
     }
 }

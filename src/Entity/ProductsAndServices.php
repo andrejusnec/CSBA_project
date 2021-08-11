@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Manager\PriceManager;
 use App\Repository\ProductsAndServicesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -78,20 +79,15 @@ class ProductsAndServices
     private $main_image;
 
     /**
-     * @return mixed
+     * @ORM\OneToMany(targetEntity=Price::class, mappedBy="product")
      */
-    public function getMainImage()
-    {
-        return $this->main_image;
-    }
+    private $prices;
 
     /**
-     * @param mixed $main_image
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="productsAndServices", cascade={"persist"})
      */
-    public function setMainImage($main_image): void
-    {
-        $this->main_image = $main_image;
-    }
+    private $tags;
+
 
     /**
      * ProductsAndServices constructor.
@@ -101,6 +97,8 @@ class ProductsAndServices
         $this->images = new ArrayCollection();
         $this->productOrderLists = new ArrayCollection();
         $this->productBalances = new ArrayCollection();
+        $this->prices = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -130,6 +128,16 @@ class ProductsAndServices
         $this->isActive = $isActive;
 
         return $this;
+    }
+
+    public function getMainImage()
+    {
+        return $this->main_image;
+    }
+
+    public function setMainImage($main_image): void
+    {
+        $this->main_image = $main_image;
     }
 
     public function getTitle(): ?string
@@ -269,13 +277,17 @@ class ProductsAndServices
 
         return $this;
     }
-    public function __toString() {
+
+    public function __toString()
+    {
         return $this->title;
     }
+
     public function getfontawesome_icon(): ?string
     {
         return $this->fontawesome_icon;
     }
+
     public function getFontawesomeIcon(): ?string
     {
         return $this->fontawesome_icon;
@@ -291,4 +303,63 @@ class ProductsAndServices
 //            return $this->images[0]->getFileName();
 //        }
 //    }
+
+    /**
+     * @return Collection|Price[]
+     */
+    public function getPrices(): Collection
+    {
+        return $this->prices;
+    }
+
+    public function addPrice(Price $price): self
+    {
+        if (!$this->prices->contains($price)) {
+            $this->prices[] = $price;
+            $price->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrice(Price $price): self
+    {
+        if ($this->prices->removeElement($price)) {
+            // set the owning side to null (unless already changed)
+            if ($price->getProduct() === $this) {
+                $price->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCurrentPrice(PriceManager $priceManager): int
+    {
+        return $priceManager->getPriceByPeriod(product_id: $this->getId());
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        $this->tags->removeElement($tag);
+
+        return $this;
+    }
 }

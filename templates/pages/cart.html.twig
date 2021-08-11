@@ -11,7 +11,7 @@
     </div>
 </div>
 <!-- Breadcrumb End -->
-
+    {% if app.user and cart %}
 <!-- Cart Start -->
 <div class="cart-page">
     <div class="container-fluid">
@@ -29,97 +29,38 @@
                                 <th>Remove</th>
                             </tr>
                             </thead>
+                            {% set totalAmount, shipping = 0, 1 %}
                             <tbody class="align-middle">
-                            <tr>
+                            {% for item in cart %}
+                                {% set totalAmount = totalAmount + item.total %}
+                            <tr class="cart-item-full">
                                 <td>
                                     <div class="img">
-                                        <a href="#"><img src="{{ asset('build/images/product-1.jpg') }}" alt="Image"></a>
-                                        <p>Product Name</p>
+                                        <a href="#"><img src="{{ asset('uploads/images/') }}{{ item.product.MainImage is not empty ? item.product.MainImage.FileName : '#' }}" alt="{{ item.product.title }}"></a>
+                                        <p>{{ item.product.title }}</p>
                                     </div>
-                                </td>
-                                <td>$99</td>
+                                 </td>
+                                <td>{{ item.product.getCurrentPrice(pm)|format_currency('EUR') }}</td>
                                 <td>
                                     <div class="qty">
-                                        <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                        <input type="text" value="1">
-                                        <button class="btn-plus"><i class="fa fa-plus"></i></button>
+                                        <button class="btn-minus cart-amount" data-cart="{{ item.id }}" data-product="{{ item.product.id }}" data-user="{{ app.user.id }}" data-direction="minus">
+                                            <i class="fa fa-minus"></i></button>
+                                        {% set uniqId = "%sABC"|format(item.id) %}
+                                        <input readonly data-counter="{{uniqId}}" id="{{uniqId}}" class="current-amount" type="text" value="{{ item.quantity }}">
+                                        <button class="btn-plus cart-amount" data-cart="{{ item.id }}" data-product="{{ item.product.id }}" data-user="{{ app.user.id }}" data-direction="plus">
+                                            <i class="fa fa-plus"></i></button>
                                     </div>
                                 </td>
-                                <td>$99</td>
-                                <td><button><i class="fa fa-trash"></i></button></td>
+                                <td><span id="{{ item.id }}">{{ item.total|format_currency('EUR') }}</span></td>
+                                <td>
+                                    <form action="{{ path('cart_remove', {product : item.product.id}) }}" method="post">
+                                        <button name="foo" value="{{ item.product.id }}"><i class="fa fa-trash"></i></button>
+                                    </form>
+                                </td>
+{#                                <button><a href="{{ path('cart_remove', {'product' : item.product.id}) }}"><i class="fa fa-trash"></i></a></button>#}
                             </tr>
-                            <tr>
-                                <td>
-                                    <div class="img">
-                                        <a href="#"><img src="{{ asset('build/images/product-2.jpg') }}" alt="Image"></a>
-                                        <p>Product Name</p>
-                                    </div>
-                                </td>
-                                <td>$99</td>
-                                <td>
-                                    <div class="qty">
-                                        <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                        <input type="text" value="1">
-                                        <button class="btn-plus"><i class="fa fa-plus"></i></button>
-                                    </div>
-                                </td>
-                                <td>$99</td>
-                                <td><button><i class="fa fa-trash"></i></button></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="img">
-                                        <a href="#"><img src="{{ asset('build/images/product-3.jpg') }}" alt="Image"></a>
-                                        <p>Product Name</p>
-                                    </div>
-                                </td>
-                                <td>$99</td>
-                                <td>
-                                    <div class="qty">
-                                        <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                        <input type="text" value="1">
-                                        <button class="btn-plus"><i class="fa fa-plus"></i></button>
-                                    </div>
-                                </td>
-                                <td>$99</td>
-                                <td><button><i class="fa fa-trash"></i></button></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="img">
-                                        <a href="#"><img src="{{ asset('build/images/product-4.jpg') }}" alt="Image"></a>
-                                        <p>Product Name</p>
-                                    </div>
-                                </td>
-                                <td>$99</td>
-                                <td>
-                                    <div class="qty">
-                                        <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                        <input type="text" value="1">
-                                        <button class="btn-plus"><i class="fa fa-plus"></i></button>
-                                    </div>
-                                </td>
-                                <td>$99</td>
-                                <td><button><i class="fa fa-trash"></i></button></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="img">
-                                        <a href="#"><img src="{{ asset('build/images/product-5.jpg') }}" alt="Image"></a>
-                                        <p>Product Name</p>
-                                    </div>
-                                </td>
-                                <td>$99</td>
-                                <td>
-                                    <div class="qty">
-                                        <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                        <input type="text" value="1">
-                                        <button class="btn-plus"><i class="fa fa-plus"></i></button>
-                                    </div>
-                                </td>
-                                <td>$99</td>
-                                <td><button><i class="fa fa-trash"></i></button></td>
-                            </tr>
+                            {% endfor %}
+
                             </tbody>
                         </table>
                     </div>
@@ -132,13 +73,14 @@
                             <div class="cart-summary">
                                 <div class="cart-content">
                                     <h1>Cart Summary</h1>
-                                    <p>Sub Total<span>$99</span></p>
-                                    <p>Shipping Cost<span>$1</span></p>
-                                    <h2>Grand Total<span>$100</span></h2>
+                                    <p>Sub Total<span>{{ totalAmount | format_currency('EUR') }}</span></p>
+                                    <p>Shipping Cost<span>{{ shipping | format_currency('EUR') }}</span></p>
+                                    {% set finalTotal = totalAmount + shipping  %}
+                                    <h2>Grand Total<span>{{ finalTotal | format_currency('EUR') }}</span></h2>
                                 </div>
                                 <div class="cart-btn">
-                                    <button>Update Cart</button>
-                                    <button>Checkout</button>
+                                    <button><a style="color: #0a0a0a" href="{{ path('pages/cart')}}">Update Cart</a></button>
+                                    <button><a style="color:white" href="{{ path('pages/checkout') }}">Checkout</a></button>
                                 </div>
                             </div>
                         </div>
@@ -148,5 +90,6 @@
         </div>
     </div>
 </div>
+                            {% endif %}
 <!-- Cart End -->
 {% endblock %}

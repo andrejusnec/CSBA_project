@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProductBalanceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Entity(repositoryClass=ProductBalanceRepository::class)
@@ -34,17 +35,6 @@ class ProductBalance
      */
     private ?Order $order_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Size::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $size;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Color::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $color;
 
     /**
      * @ORM\Column(type="decimal", precision=18, scale=3)
@@ -55,6 +45,13 @@ class ProductBalance
      * @ORM\Column(type="decimal", precision=18, scale=3)
      */
     private $reserved;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Cart::class, cascade={"all"}, orphanRemoval = true)
+     * @ORM\JoinColumn(nullable=true)
+     * @JoinColumn(onDelete="CASCADE")
+     */
+    private $cart;
 
     public function getId(): ?int
     {
@@ -97,29 +94,6 @@ class ProductBalance
         return $this;
     }
 
-    public function getSize(): ?Size
-    {
-        return $this->size;
-    }
-
-    public function setSize(?Size $size): self
-    {
-        $this->size = $size;
-
-        return $this;
-    }
-
-    public function getColor(): ?Color
-    {
-        return $this->color;
-    }
-
-    public function setColor(?Color $color): self
-    {
-        $this->color = $color;
-
-        return $this;
-    }
 
     public function getQuantity(): ?string
     {
@@ -141,6 +115,18 @@ class ProductBalance
     public function setReserved(string $reserved): self
     {
         $this->reserved = $reserved;
+
+        return $this;
+    }
+
+    public function getCart(): ?Cart
+    {
+        return $this->cart;
+    }
+
+    public function setCart(?Cart $cart): self
+    {
+        $this->cart = $cart;
 
         return $this;
     }

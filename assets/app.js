@@ -14,17 +14,20 @@ import './js/slick/slick-theme.css';
 require('@fortawesome/fontawesome-free/css/all.min.css');
 import './styles/app.css';
 import './styles/custom.css';
+import './styles/account.css';
+import './styles/login.css';
 
 //JS
-
+require('bootstrap/dist/js/bootstrap.bundle');
+const jQuery = require('jquery');
+import './js/custom.js';
+import './js/wishlist.js';
 import './js/easing/easing.min.js';
 import './js/easing/easing.js';
 import './js/slick/slick.min.js';
 import './js/main.js';
 import './bootstrap';
-require('bootstrap/dist/js/bootstrap.bundle');
-const jQuery = require('jquery');
-import './js/custom.js';
+
 
 
 

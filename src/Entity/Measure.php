@@ -27,11 +27,6 @@ class Measure
      */
     private ?string $full_name;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getCode(): ?string
     {
         return $this->code;
@@ -67,7 +62,9 @@ class Measure
 
         return $this;
     }
-    public function __toString() {
+
+    public function __toString()
+    {
         return $this->full_name;
     }
 }

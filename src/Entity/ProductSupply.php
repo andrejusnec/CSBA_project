@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 
 /**
  * @ORM\Entity(repositoryClass=ProductSupplyRepository::class)
+ * @ORM\EntityListeners({"App\EventListener\ProductSupplyCreateListener", "App\EventListener\ProductSupplyEditListener"})
  */
 class ProductSupply
 {
@@ -41,12 +42,13 @@ class ProductSupply
     private ?bool $status;
 
     /**
-     * @ORM\OneToMany(targetEntity=ProductSupplyList::class, mappedBy="product_supply")
+     * @ORM\OneToMany(targetEntity=ProductSupplyList::class, mappedBy="product_supply", cascade={"persist", "remove"})
      */
     private $productSupplyLists;
 
     public function __construct()
     {
+        $this->order_number = $this->id . mt_rand(1, 100000);
         $this->productSupplyLists = new ArrayCollection();
         $this->date = new \DateTime('Europe/Vilnius');
     }
@@ -125,7 +127,6 @@ class ProductSupply
     public function removeProductSupplyList(ProductSupplyList $productSupplyList): self
     {
         if ($this->productSupplyLists->removeElement($productSupplyList)) {
-            // set the owning side to null (unless already changed)
             if ($productSupplyList->getProductSupply() === $this) {
                 $productSupplyList->setProductSupply(null);
             }

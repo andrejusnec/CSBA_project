@@ -1,0 +1,38 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% if ea.crud.currentAction == 'detail' %}
+    <table class="table">
+{#        {{ dump(_context|keys) }}#}
+        {{ dump(ea_url()) }}
+        {% set url = ea_url()
+            .setController('App\\Controller\\EACrudControllers\\ProductSupplyListCrudController')
+            .setAction('index') %}
+        <thead>
+        <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Quantity</th>
+{#            <th scope="col">Handle</th>#}
+        </tr>
+        </thead>
+{#        {{ dump(ea) }}#}
+{#        {{ dump(entity) }}#}
+{#        {{ dump(field) }}#}
+{#        {{ dump(field.value) }}#}
+        {% for value in field.value %}
+
+        <tbody>
+        <tr>
+{#            <th scope="row">1</th>#}
+            <td>{{ value.product }}</td>
+            <td>{{ value.quantity }}</td>
+            <td><a class=" action-new btn btn-primary"
+                   href="https://127.0.0.1:8000/admin?crudAction=new&amp;crudControllerFqcn=App%5CController%5CEACrudControllers%5CProductSupplyListCrudController&amp;menuIndex=0&amp;referrer=https%3A%2F%2F127.0.0.1%3A8000%2Fadmin%3FcrudAction%3Dindex%26crudControllerFqcn%3DApp%255CController%255CEACrudControllers%255CProductSupplyListCrudController%26menuIndex%3D0%26signature%3DGPRTCGneGyvPH8NLSz0jr_mgzLEMXH5Ri3N_A0LnCQI%26submenuIndex%3D5&amp;signature=T14Q6UiAx2ZCHB1dzxnSb24baScdt9au5k5R3Zcb-Qo&amp;submenuIndex=5" data-action-name="new">Add ProductSupplyList</a></td>
+            <td><a href="{{ url }}">Test</a> </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <span class="badge badge-secondary">{{ field.formattedValue }}</span>
+{% endif %}

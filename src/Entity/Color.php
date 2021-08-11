@@ -20,12 +20,12 @@ class Color
     /**
      * @ORM\Column(type="boolean")
      */
-    private ?bool $isActive;
+    private $isActive;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=120)
      */
-    private ?string $title;
+    private $title;
 
     public function getId(): ?int
     {
@@ -54,8 +54,5 @@ class Color
         $this->title = $title;
 
         return $this;
-    }
-    public function __toString() {
-        return $this->title;
     }
 }
