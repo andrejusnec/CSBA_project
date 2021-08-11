@@ -62,7 +62,8 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::section('Product Supply'),
                 MenuItem::linkToCrud('Product Supply', 'fas fa-file-invoice', ProductSupply::class),
                 MenuItem::linkToCrud('Product Supply List', 'fas fa-archive', ProductSupplyList::class),
-            ])
+            ]),
+            MenuItem::linkToUrl('Back to Shop', 'fas fa-home', '\\')
         ];
     }
 

@@ -77,9 +77,10 @@
 
                                         </div>
                                         {% if app.user %}
-                                        <div class="action">
-                                            <a class="btn" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a>
-                                            <a class="btn" href="#"><i class="fa fa-shopping-bag"></i>Buy Now</a>
+                                        <div class="action add-to-cart">
+                                            <a class="addToCart btn" data-product="{{ product.id }}" data-user="{{ app.user.id }}"
+                                               href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a>
+{#                                            <a class="btn" href="#"><i class="fa fa-shopping-bag"></i>Buy Now</a>#}
                                         </div>
                                             {% endif %}
                                     </div>

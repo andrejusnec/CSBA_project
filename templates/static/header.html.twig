@@ -50,6 +50,9 @@
                         {% if app.user %}
                             <a href="{{ path('pages/my_account') }}" class="nav-link">{{ app.user.email }}</a>
                             <a href="{{ path('app_logout') }}" class="nav-link"><i class="fas fa-sign-out-alt"></i></a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('admin') }}" class="nav-link">Admin</a>
+                            {% endif %}
                         {% else %}
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Account</a>
