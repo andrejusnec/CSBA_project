@@ -8,6 +8,11 @@
 {#                    {% set data = allProducts %}#}
 {#    {% endif %}#}
 {#    {% if data %}#}
+    {% if pagination is defined %}
+        {% set pagination = pagination %}
+    {% else %}
+        {% set pagination = selectedProducts %}
+    {% endif %}
         {% for value in pagination %}
             <div class="col-md-4">
                 <div class="product-item">

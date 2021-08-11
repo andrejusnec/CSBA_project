@@ -90,7 +90,9 @@
 {#                        </nav>#}
 {#                    </div>#}
                     <div class="navigation col-md-12" style="margin:auto">
+                        {% if pagination is defined %}
                         {{ knp_pagination_render(pagination) }}
+                        {% endif %}
                     </div>
                     <!-- Pagination End -->
                 </div>

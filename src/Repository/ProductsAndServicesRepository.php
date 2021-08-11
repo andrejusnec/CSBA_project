@@ -85,5 +85,20 @@ class ProductsAndServicesRepository extends ServiceEntityRepository
         return $qb;
     }
 
+    public function findAllProductsOfCatalog($term, $catalogList): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere("p.parent IN(:catalogList)")
+            ->setParameter('catalogList', $catalogList)
+            ->andWhere('p.isActive = :val AND p.isProduct = :val')
+            ->setParameter('val', true);
+
+        if($term) {
+            $qb->andWhere('p.title LIKE :term OR t.name LIKE :term')
+                ->setParameter('term', '%'.$term.'%');
+
+        }
+        return $qb;
+    }
 
 }

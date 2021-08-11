@@ -69,6 +69,19 @@ class ProductAndServicesManager
         }
     }
 
+    public function getAllCategories($id, &$array): void
+    {
+        if(gettype($id) === "string" )
+        {
+            $id = intval($id);
+        }
+        $array[] = $id;
+        $data = $this->repository->findBy(['isActive' => true, 'parent' => $id, 'isCatalog' => true]);
+        foreach ($data as $value) {
+                $this->getAllCategories($value->getId(), $array);
+        }
+    }
+
     public function findAllProducts(): array
     {
         return $this->repository->findBy(['isProduct' => true]);
@@ -110,7 +123,7 @@ class ProductAndServicesManager
         return $this->repository->findTenProducts();
     }
 
-    public function getTagProductsForPagination($tag) : QueryBuilder
+    public function getTagProductsForPagination($tag): QueryBuilder
     {
         return $this->repository->getTagProductsQuery($tag);
     }
@@ -122,5 +135,10 @@ class ProductAndServicesManager
     public function findAllWithSearch(?string $term): QueryBuilder
     {
         return $this->repository->findAllProductsWithSearchQueryBuilder($term);
+    }
+
+    public function findAllProductsOfCatalog(?string $term, $catalogList)
+    {
+        return $this->repository->findAllProductsOfCatalog($term, $catalogList);
     }
 }

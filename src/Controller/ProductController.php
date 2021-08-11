@@ -77,23 +77,27 @@ class ProductController extends AbstractController
      */
     public function product_list_show($slug, Request $request): Response
     {
+//        $catalogs = [];
+//        $this->productManager->getAllCategories($slug, $catalogs);
+//        $test = $this->productManager->findAllWithSearch(null, $catalogs);
+//        //dd($test);
         $selectedProducts = [];
         $this->productManager->getAllCategoryProducts($slug, $selectedProducts);
         $tagsOfSelectedProducts = $this->productManager->getTagsFromListOfProducts($selectedProducts);
-        //$query = $selectedProducts;
+        $query = $selectedProducts;
         $q = $request->query->get('q');
-        $query = $this->productManager->findAllWithSearch($q);
-        $pagination = $this->paginator->paginate(
-            $query, /* query NOT result */
-            $request->query->getInt('page', 1),
-            6
-        );
+        //$query = $this->productManager->findAllWithSearch($q);
+//        $pagination = $this->paginator->paginate(
+//            $test, /* query NOT result */
+//            $request->query->getInt('page', 1),
+//            6
+//        );
         $allCategories = $this->productManager->hierarchy();
 
         return $this->render('pages/product_list.html.twig',
             ['allCategories' => $allCategories,
-                //'selectedProducts' => $selectedProducts,
-                'pagination' => $pagination,
+                'selectedProducts' => $selectedProducts,
+                //'pagination' => $pagination,
                 'product_id' => $slug,
                 'productManager' => $this->productManager,
                 'pm' => $this->priceManager,
