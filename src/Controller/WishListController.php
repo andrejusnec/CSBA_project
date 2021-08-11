@@ -60,10 +60,9 @@ class WishListController extends AbstractController
     /**
      * @Route("wishlists/{product<\d+>}/{user<\d+>}", name="add_to_wishlist", methods="POST")
      */
-    public function addToWishList($product, $user): Response
+    public function addToWishList($product, $user)
     {
         $this->wishListManager->createWishList($product, $user);
-        return new Response('paviko');
     }
 
     /**

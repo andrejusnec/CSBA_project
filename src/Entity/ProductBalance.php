@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProductBalanceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Entity(repositoryClass=ProductBalanceRepository::class)
@@ -46,7 +47,9 @@ class ProductBalance
     private $reserved;
 
     /**
-     * @ORM\OneToOne(targetEntity=Cart::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Cart::class, cascade={"all"}, orphanRemoval = true)
+     * @ORM\JoinColumn(nullable=true)
+     * @JoinColumn(onDelete="CASCADE")
      */
     private $cart;
 

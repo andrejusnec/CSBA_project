@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ProductsAndServices;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -31,35 +32,58 @@ class ProductsAndServicesRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    // /**
-    //  * @return ProductsAndServices[] Returns an array of ProductsAndServices objects
-    //  */
 
     /**
-     * @return int|mixed|string
+     * @return QueryBuilder
      */
-    public function findOnlyActiveProducts()
+    public function findOnlyActiveProductsPagination(): QueryBuilder
     {
-        return $this->createQueryBuilder('prod')
+        $qb = $this->createQueryBuilder('prod')
             ->andWhere('prod.isProduct = :val')
             ->andWhere('prod.isActive = :val')
-            ->setParameter('val', true)
-            ->getQuery()
-            ->getResult()
-        ;
+            ->setParameter('val', true);
+        return $qb;
     }
 
 
-    /*
-    public function findOneBySomeField($value): ?ProductsAndServices
+
+    public function findTenProducts(): array
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('p.isProduct = :val')
+            ->andWhere('p.isActive = :val')
+            ->setParameter('val', true)
+            ->setMaxResults(10)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult();
     }
-    */
+
+    public function getTagProductsQuery($tag): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('prod')
+            ->andWhere(':val MEMBER OF prod.tags')
+            ->setParameter('val', $tag->getId());
+        return $qb;
+    }
+
+    /**
+     * @param $term
+     * @return QueryBuilder
+     */
+    public function findAllProductsWithSearchQueryBuilder($term): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('p')
+        ->innerJoin('p.tags',  't')
+        ->addSelect('t');
+
+        if($term) {
+            $qb->andWhere('p.title LIKE :term OR t.name LIKE :term')
+                ->setParameter('term', '%'.$term.'%')
+                ->andWhere('p.isActive = :val AND p.isProduct = :val')
+                ->setParameter('val', true);
+        }
+        return $qb;
+    }
+
 
 }

@@ -61,7 +61,7 @@ class OrderManager
             $order->setStatus(true);
             $this->em->persist($order);
 
-            $productOrderLists = $this->productOrderListManager->createProductOrderLists($carts, $this->em,);
+            $productOrderLists = $this->productOrderListManager->createProductOrderLists($carts, $this->em);
             $order->setOrderTotal($this->sumHelper->orderSum($productOrderLists));
             foreach ($productOrderLists as $list) {
                 $order->addProductOrderList($list);

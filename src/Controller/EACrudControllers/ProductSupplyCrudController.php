@@ -38,7 +38,7 @@ class ProductSupplyCrudController extends AbstractCrudController
     {
         return [
             FormField::addPanel('Product Supply'),
-            TextField::new('order_number'),
+            TextField::new('order_number')->onlyOnIndex(),
             TimeField::new('date')->setLabel('Time')->hideOnForm(),
             DateField::new('date')->hideOnForm(),
 
@@ -58,11 +58,9 @@ class ProductSupplyCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $createProductBalance = Action::new('createBalance', 'test', 'fa fa-file-invoice')
-            ->linkToCrudAction('createProductBalance');
+
         return $actions
-            ->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ->add(Crud::PAGE_INDEX, $createProductBalance);
+            ->add(Crud::PAGE_INDEX, Action::DETAIL);
     }
 
     public function configureFilters(Filters $filters): Filters

@@ -8,6 +8,7 @@ use App\Entity\ProductsAndServices;
 use App\Repository\ProductsAndServicesRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\QueryBuilder;
 
 class ProductAndServicesManager
 {
@@ -73,6 +74,12 @@ class ProductAndServicesManager
         return $this->repository->findBy(['isProduct' => true]);
     }
 
+    public function findAllProductsWithPagination()
+    {
+        return $this->repository->findOnlyActiveProductsPagination();
+    }
+
+
     public function findOne(int $id): ProductsAndServices
     {
         return $this->repository->find($id);
@@ -86,4 +93,34 @@ class ProductAndServicesManager
         return $this->productBalanceManager->productAmountInStock($product);
     }
 
+    public function getTagsFromListOfProducts(array $listOfProducts): array
+    {
+        $tags = array();
+        foreach ($listOfProducts as $value) {
+            $arr = $value->getTags();
+            foreach ($arr as $val) {
+                $tags[] = $val;
+            }
+        }
+        return array_unique($tags);
+    }
+
+    public function getTenRandomProducts(): array
+    {
+        return $this->repository->findTenProducts();
+    }
+
+    public function getTagProductsForPagination($tag) : QueryBuilder
+    {
+        return $this->repository->getTagProductsQuery($tag);
+    }
+
+    /**
+     * @param string|null $term
+     * @return QueryBuilder
+     */
+    public function findAllWithSearch(?string $term): QueryBuilder
+    {
+        return $this->repository->findAllProductsWithSearchQueryBuilder($term);
+    }
 }

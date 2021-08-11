@@ -14,6 +14,7 @@ use App\Entity\ProductOrderList;
 use App\Entity\ProductsAndServices;
 use App\Entity\ProductSupply;
 use App\Entity\ProductSupplyList;
+use App\Entity\Tag;
 use App\Entity\User;
 use App\Entity\WishList;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -54,13 +55,15 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud('Country', 'fas fa-flag', Country::class),
                 MenuItem::linkToCrud('Cart', 'fas fa-shopping-cart', Cart::class),
                 MenuItem::linkToCrud('Wishlist', 'fas fa-heart', WishList::class),
+                MenuItem::linkToCrud('Tag', 'fas fa-tags', Tag::class),
                 MenuItem::section('Orders'),
                 MenuItem::linkToCrud('Order', 'fas fa-file-invoice', Order::class),
                 MenuItem::linkToCrud('Product Order List', 'fas fa-archive', ProductOrderList::class),
                 MenuItem::section('Product Supply'),
                 MenuItem::linkToCrud('Product Supply', 'fas fa-file-invoice', ProductSupply::class),
                 MenuItem::linkToCrud('Product Supply List', 'fas fa-archive', ProductSupplyList::class),
-            ])
+            ]),
+            MenuItem::linkToUrl('Back to Shop', 'fas fa-home', '\\')
         ];
     }
 

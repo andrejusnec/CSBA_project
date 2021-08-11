@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Entity\Cart;
+use App\Entity\ProductBalance;
 use App\Entity\ProductOrderList;
 use App\Repository\ProductOrderListRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,8 +35,12 @@ class ProductOrderListManager
             $productOrderList->setQuantity($cart->getQuantity());
             $productOrderList->setTotal($cart->getTotal());
             $em->persist($productOrderList);
-            $em->remove($cart);
             $productOrderListArray[] = $productOrderList;
+            if (!empty($cart)) {
+                $productBalance = $em->getRepository(ProductBalance::class)->findOneBy(['cart' => $cart]);
+                $em->remove($productBalance);
+                $em->remove($cart);
+            }
         }
         return $productOrderListArray;
     }

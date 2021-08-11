@@ -12,7 +12,7 @@
                     <li>
                     <a class="{{ value.children is not empty ? 'caret' : ''}}"
                        href="{{ path('pages/product_list_show', { slug: value.category.id })}}"><i
-                                class="{{ value.category.fontawesome_icon }}"></i>{{ value.category.title }}</a>
+                                class="{{ value.category.fontawesome_icon }}"></i> {{ value.category.title }}</a>
                     {% if value.children is not empty %}
                         <ul class="nested {{ product_id == value.category.id  ? 'active' : '' }}">
                             {{ macros.render_map(value.children) }}

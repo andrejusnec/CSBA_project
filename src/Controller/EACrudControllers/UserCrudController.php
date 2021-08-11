@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\ArrayFilter;
@@ -25,14 +26,18 @@ class UserCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        $choises = ['Admin' => 'ROLE_ADMIN', 'Manager' => 'ROLE_MANAGER'];
         return [
             TextField::new('getFullName', 'Full Name')->onlyOnIndex(),
             TextField::new('first_name')->hideOnIndex(),
             TextField::new('last_name')->hideOnIndex(),
             EmailField::new('email'),
             TextField::new('phone'),
+            ChoiceField::new('roles')
+                ->autocomplete()
+                ->allowMultipleChoices()
+                ->setChoices($choises),
             BooleanField::new('isVerified'),
-            ArrayField::new('roles', 'Roles')->onlyOnForms()
         ];
     }
 

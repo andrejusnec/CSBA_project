@@ -1,50 +1,62 @@
 {% block productList %}
 
-    {% if selectedProducts is defined %}
-        {% set data = selectedProducts %}
-    {% else %}
-        {% set data = allProducts %}
-    {% endif %}
-    {% if data %}
-    {% for value in data %}
-        <div class="col-md-4">
-            <div class="product-item">
-                <div class="product-title">
-                    <a href="{{ path('pages/product_details_show', {'slug' : value.id}) }}">{{ value.title }}</a>
-                    <div class="ratting">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
+{#    {% if selectedProducts is defined %}#}
+{#            {% set data = selectedProducts %}#}
+{#        {% elseif products is defined %}#}
+{#                {% set data = products %}#}
+{#            {% else %}#}
+{#                    {% set data = allProducts %}#}
+{#    {% endif %}#}
+{#    {% if data %}#}
+        {% for value in pagination %}
+            <div class="col-md-4">
+                <div class="product-item">
+                    <div class="product-title">
+                        <a href="{{ path('pages/product_details_show', {'slug' : value.id}) }}">{{ value.title }}</a>
+                        <div class="ratting">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
                     </div>
-                </div>
-                <div class="product-image">
-                    <a href="#">
-                        <img src="{{ asset('uploads/images/') }}{{ value.MainImage is not empty ? value.MainImage.FileName : '#' }}"
-                             alt="{{ value.title }}">
-                    </a>
-                    <div class="product-action add-to-wishlist add-to-cart">
-                        {% if app.user %}
-                            {% set quantity = productManager.getProductAmountInStock(value) %}
+                    <div class="product-image">
+                        <a href="#">
+                            <img src="{{ asset('uploads/images/') }}{{ value.MainImage is not empty ? value.MainImage.FileName : '#' }}"
+                                 alt="{{ value.title }}">
+                        </a>
+                        <div class="product-action add-to-wishlist add-to-cart">
+                            {% if app.user %}
+                                {% set quantity = productManager.getProductAmountInStock(value) %}
                                 {% if quantity and quantity is not null and quantity > 0 %}
-                            <a class ="addToCart" data-product="{{ value.id }}" data-user="{{ app.user.id}}" href="#"><i class="fa fa-cart-plus"></i></a>
+                                    <a class="addToCart" data-product="{{ value.id }}" data-user="{{ app.user.id }}"
+                                       href="#"><i class="fa fa-cart-plus"></i></a>
                                 {% endif %}
-                            <a class ="wishListAdd" data-add="{{ value.id }}" data-user="{{ app.user.id}}" href="#"><i class="fa fa-heart"></i></a>
-                        {% endif %}
-                        <a href="{{ path('pages/product_details_show', {'slug' : value.id}) }}"><i class="fa fa-search"></i></a>
+                                <a class="wishListAdd" data-add="{{ value.id }}" data-user="{{ app.user.id }}" href="#"><i
+                                            class="fa fa-heart"></i></a>
+                            {% endif %}
+                            <a href="{{ path('pages/product_details_show', {'slug' : value.id}) }}"><i
+                                        class="fa fa-search"></i></a>
+                        </div>
                     </div>
-                </div>
-                <div class="product-price">
-                    <h3>{{ value.getCurrentPrice(pm)|format_currency('EUR') }}</h3>
-                    {% if app.user %}
-                    {% if quantity and quantity is not null and quantity> 0  %}
-                    <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
-                    {% endif %}
-                    {% endif %}
+                    <div class="product-price">
+                        <h3>{{ value.getCurrentPrice(pm)|format_currency('EUR') }}</h3>
+                        {% if app.user %}
+                            {% if quantity and quantity is not null and quantity> 0 %}
+                                <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-    {% endfor %}
-    {% endif %}
+            {#     POSSIBLE TO REMOVE ELSE       #}
+            {% else %}
+{#            <tr>#}
+{#                <td colspan="4" class="text-center">#}
+{#                    No comments found#}
+{#                </td>#}
+{#            </tr>#}
+        {% endfor %}
+{#    {% endif %}#}
 {% endblock %}

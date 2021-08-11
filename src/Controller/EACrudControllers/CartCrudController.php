@@ -3,6 +3,7 @@
 namespace App\Controller\EACrudControllers;
 
 use App\Entity\Cart;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -28,5 +29,15 @@ class CartCrudController extends AbstractCrudController
             NumberField::new('Quantity'),
             NumberField::new('Total'),
         ];
+    }
+
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('user')
+            ->add('product')
+            ->add('price')
+            ->add('quantity')
+            ->add('total');
     }
 }

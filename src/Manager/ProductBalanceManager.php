@@ -51,7 +51,9 @@ class ProductBalanceManager
      */
     public function productAmountInStock($product): mixed
     {
-        return $this->repository->countProductBalance($product);
+        $rez = $this->repository->countProductBalance($product);
+        //dd($rez);
+        return $rez;
     }
 
     public function getProductBalanceByCart(Cart $cart): ?ProductBalance

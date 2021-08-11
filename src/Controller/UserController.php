@@ -23,14 +23,6 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("contact", name="pages/contact", methods={"GET"})
-     */
-    public function contact(): Response
-    {
-        return $this->render('pages/contact.html.twig');
-    }
-
-    /**
      * @Route("my_account", name="pages/my_account", methods={"GET"})
      */
     public function my_account(OrderManager $om): Response

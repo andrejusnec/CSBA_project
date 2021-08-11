@@ -83,6 +83,11 @@ class ProductsAndServices
      */
     private $prices;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="productsAndServices", cascade={"persist"})
+     */
+    private $tags;
+
 
     /**
      * ProductsAndServices constructor.
@@ -93,6 +98,7 @@ class ProductsAndServices
         $this->productOrderLists = new ArrayCollection();
         $this->productBalances = new ArrayCollection();
         $this->prices = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -331,5 +337,29 @@ class ProductsAndServices
     public function getCurrentPrice(PriceManager $priceManager): int
     {
         return $priceManager->getPriceByPeriod(product_id: $this->getId());
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        $this->tags->removeElement($tag);
+
+        return $this;
     }
 }
